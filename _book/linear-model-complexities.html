@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 14 Linear Model Complexities | A Guide to The New Statistics with R</title>
+<meta name="author" content="Pete Apicella">
+<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta property="og:title" content="Chapter 14 Linear Model Complexities | A Guide to The New Statistics with R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 14 Linear Model Complexities | A Guide to The New Statistics with R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="14.1 Introduction Earlier chapters investigated more complex forms of ANOVA plus ANCOVA too There were some complexities that arose in the analysis, but were skimmed over This chapter will...">
+<meta property="og:description" content="14.1 Introduction Earlier chapters investigated more complex forms of ANOVA plus ANCOVA too There were some complexities that arose in the analysis, but were skimmed over This chapter will...">
+<meta name="twitter:description" content="14.1 Introduction Earlier chapters investigated more complex forms of ANOVA plus ANCOVA too There were some complexities that arose in the analysis, but were skimmed over This chapter will...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Guide to The New Statistics with R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">About</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="motivation.html"><span class="header-section-number">2</span> Motivation</a></li>
+<li><a class="" href="description.html"><span class="header-section-number">3</span> Description</a></li>
+<li><a class="" href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></li>
+<li><a class="" href="estimation.html"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="" href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">7</span> Regression</a></li>
+<li><a class="" href="prediction.html"><span class="header-section-number">8</span> Prediction</a></li>
+<li><a class="" href="testing.html"><span class="header-section-number">9</span> Testing</a></li>
+<li><a class="" href="intervals.html"><span class="header-section-number">10</span> Intervals</a></li>
+<li><a class="" href="analysis-of-variance.html"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="" href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></li>
+<li><a class="" href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="active" href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="" href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></li>
+<li><a class="" href="glms-for-count-data.html"><span class="header-section-number">16</span> GLMs for Count Data</a></li>
+<li><a class="" href="binomial-glms.html"><span class="header-section-number">17</span> Binomial GLMs</a></li>
+<li><a class="" href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></li>
+<li><a class="" href="conclusions.html"><span class="header-section-number">19</span> Conclusions</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/apicellap/NSwR.git">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="linear-model-complexities" class="section level1" number="14">
+<h1>
+<span class="header-section-number">14</span> Linear Model Complexities<a class="anchor" aria-label="anchor" href="#linear-model-complexities"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-8" class="section level2" number="14.1">
+<h2>
+<span class="header-section-number">14.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-8"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Earlier chapters investigated more complex forms of ANOVA plus ANCOVA too</li>
+<li>There were some complexities that arose in the analysis, but were skimmed over</li>
+<li>This chapter will investigate those complexities</li>
+</ul>
+<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"arm"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cowplot"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"patchwork"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Sleuth3"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/">cowplot</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-forge.r-project.org/projects/sleuth2/">Sleuth3</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div id="analysis-of-variance-for-balanced-designs" class="section level2" number="14.2">
+<h2>
+<span class="header-section-number">14.2</span> Analysis of variance for balanced designs<a class="anchor" aria-label="anchor" href="#analysis-of-variance-for-balanced-designs"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The dataset that was used in one of the earlier chapters had a balanced design:</li>
+</ul>
+<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">urlfile</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/apicellap/data/main/Data_Factorial.txt"</span>
+<span class="va">balanced</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="va">urlfile</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span> 
+<span class="co">#&gt;   Fert Light   FL Biomass.m2</span>
+<span class="co">#&gt; 1   F-    L- F-L-      254.2</span>
+<span class="co">#&gt; 2   F-    L- F-L-      202.0</span>
+<span class="co">#&gt; 3   F-    L- F-L-      392.4</span>
+<span class="co">#&gt; 4   F-    L- F-L-      455.3</span>
+<span class="co">#&gt; 5   F-    L- F-L-      359.1</span>
+<span class="co">#&gt; 6   F-    L- F-L-      386.5</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
+<code class="sourceCode R"> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span> <span class="op">==</span> <span class="st">'Fert'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'fert_'</span>
+ <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span> <span class="op">==</span> <span class="st">'Light'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'light_'</span>
+ <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span> <span class="op">==</span> <span class="st">'FL'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'fl_'</span>
+ <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span> <span class="op">==</span> <span class="st">'Biomass.m2'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'biomass'</span>
+ <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">balanced</span><span class="op">)</span>
+<span class="co">#&gt;   fert_ light_  fl_ biomass</span>
+<span class="co">#&gt; 1    F-     L- F-L-   254.2</span>
+<span class="co">#&gt; 2    F-     L- F-L-   202.0</span>
+<span class="co">#&gt; 3    F-     L- F-L-   392.4</span>
+<span class="co">#&gt; 4    F-     L- F-L-   455.3</span>
+<span class="co">#&gt; 5    F-     L- F-L-   359.1</span>
+<span class="co">#&gt; 6    F-     L- F-L-   386.5</span></code></pre></div>
+<p>Fit the same linear model and view anova output:</p>
+<div class="sourceCode" id="cb206"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">biomass</span> <span class="op">~</span> <span class="va">light_</span><span class="op">+</span> <span class="va">fert_</span> <span class="op">+</span> <span class="va">fert_</span><span class="op">:</span><span class="va">light_</span>, data <span class="op">=</span> <span class="va">balanced</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: biomass</span>
+<span class="co">#&gt;              Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; light_        1  96915   96915 11.3131  0.001345 ** </span>
+<span class="co">#&gt; fert_         1 319889  319889 37.3413 8.019e-08 ***</span>
+<span class="co">#&gt; light_:fert_  1  36409   36409  4.2501  0.043587 *  </span>
+<span class="co">#&gt; Residuals    60 513998    8567                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>The model asks about the effect of light, fertilizer, and if there is an interaction effect between the two</li>
+<li>Effects in ANOVA tables are assessed sequentially by the order laid out in the model</li>
+<li>The model could be rewritten to reorder the treatments, but when there is a balanced design with equal numbers of replicates among treatments then the values of the sums of squares are not affected the order of terms in the model formula</li>
+<li>The balanced design ensures orthogonality, which means that two or more explanatory variables can independently assessed. In other words, their effects do not depend on each other</li>
+</ul>
+<div id="balance-and-orthogonality" class="section level3" number="14.2.1">
+<h3>
+<span class="header-section-number">14.2.1</span> Balance and orthogonality<a class="anchor" aria-label="anchor" href="#balance-and-orthogonality"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>
+<p>An experimental design is said to be orthogonal when the effects of response variables are uncorrelated</p>
+<ul>
+<li>This makes the sums of squares calculated for the two variables independent of the order in which they are included in the model formula</li>
+</ul>
+</li>
+<li><p>Balanced experimental designs with equal numbers of replicates for each treatment combination ensure orthoganility - Orthangonality is lost when replication numbers are unequal across the different treatment combinations</p></li>
+<li>
+<p>The independence of values of the sums of squares (and everything that follows) makes things simple</p>
+<ul>
+<li>For these reasons, balanced designs are strongly recommended</li>
+</ul>
+</li>
+<li><p>It is not always possible to design balanced experiments</p></li>
+<li><p>Also, balance can be lost when replicates are unintentionally lost</p></li>
+<li><p>The analysis of unbalanced designs is more complicated but possible</p></li>
+</ul>
+</div>
+</div>
+<div id="analysis-of-variance-with-unbalanced-designs" class="section level2" number="14.3">
+<h2>
+<span class="header-section-number">14.3</span> Analysis of variance with unbalanced designs<a class="anchor" aria-label="anchor" href="#analysis-of-variance-with-unbalanced-designs"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>This dataset comes from a paper by Shaw &amp; Mitchell-Olds (1993). In this dataset:
+<ul>
+<li>Response variable - final plant height</li>
+<li>Explanatory variable #1 - removal of plant neighbors</li>
+<li>Explanatory variable #2 - initial size of the target plants</li>
+</ul>
+</li>
+<li>Both explanatory variables are factors, and they each have two levels
+<ul>
+<li>Initial size levels = small and large</li>
+<li>The design is one that is fully factorialized with all four possible combinations of the treatments</li>
+</ul>
+</li>
+<li>The design is unbalanced and non-orthogonal because the different treatment combinations have different numbers of biological replicates</li>
+</ul>
+<p>We have to create the dataframe:</p>
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">height</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">57</span>, <span class="fl">91</span>, <span class="fl">94</span>, <span class="fl">102</span>, <span class="fl">110</span>, <span class="fl">57</span>, <span class="fl">71</span>, <span class="fl">85</span>, <span class="fl">105</span>, <span class="fl">120</span><span class="op">)</span>  
+<span class="va">size</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Small"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Large"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Small"</span>, <span class="fl">3</span><span class="op">)</span>,  <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Large"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>  
+<span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="fl">6</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Removal"</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>  
+<span class="va">unbalanced</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">height</span>, <span class="va">size</span>, <span class="va">treatment</span><span class="op">)</span>  
+<span class="va">unbalanced</span> 
+<span class="co">#&gt;    height  size treatment</span>
+<span class="co">#&gt; 1      50 Small   Control</span>
+<span class="co">#&gt; 2      57 Small   Control</span>
+<span class="co">#&gt; 3      91 Large   Control</span>
+<span class="co">#&gt; 4      94 Large   Control</span>
+<span class="co">#&gt; 5     102 Large   Control</span>
+<span class="co">#&gt; 6     110 Large   Control</span>
+<span class="co">#&gt; 7      57 Small   Removal</span>
+<span class="co">#&gt; 8      71 Small   Removal</span>
+<span class="co">#&gt; 9      85 Small   Removal</span>
+<span class="co">#&gt; 10    105 Large   Removal</span>
+<span class="co">#&gt; 11    120 Large   Removal</span></code></pre></div>
+<p>Summarize the two factor design in a table:</p>
+<div class="sourceCode" id="cb208"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">size</span>,<span class="va">treatment</span><span class="op">)</span>
+<span class="co">#&gt;        treatment</span>
+<span class="co">#&gt; size    Control Removal</span>
+<span class="co">#&gt;   Large       4       2</span>
+<span class="co">#&gt;   Small       2       3</span></code></pre></div>
+<p>A model that fits treatment first produces the following anova table:</p>
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod_TxS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">treatment</span> <span class="op">*</span> <span class="va">size</span>, data <span class="op">=</span> <span class="va">unbalanced</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">mod_TxS</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;                Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; treatment       1   35.3    35.3  0.3309 0.5831478    </span>
+<span class="co">#&gt; size            1 4846.0  4846.0 45.3658 0.0002686 ***</span>
+<span class="co">#&gt; treatment:size  1   11.4    11.4  0.1068 0.7533784    </span>
+<span class="co">#&gt; Residuals       7  747.8   106.8                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<p>Reverse the order in the model formula (put size first):</p>
+<div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod_SxT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">size</span> <span class="op">*</span> <span class="va">treatment</span>, data <span class="op">=</span> <span class="va">unbalanced</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">mod_SxT</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;                Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; size            1 4291.2  4291.2 40.1718 0.0003896 ***</span>
+<span class="co">#&gt; treatment       1  590.2   590.2  5.5249 0.0510495 .  </span>
+<span class="co">#&gt; size:treatment  1   11.4    11.4  0.1068 0.7533784    </span>
+<span class="co">#&gt; Residuals       7  747.7   106.8                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>The good news about the two models’ tables:
+<ul>
+<li>The <strong>Sum Sq</strong> value for the <strong>size:treatment</strong> row and the <strong>Residuals</strong> row are the same in both tables</li>
+</ul>
+</li>
+<li>The bad news:
+<ul>
+<li>The <strong>Sum Sq</strong> values for the two main effects are different in each table
+<ul>
+<li>This remains the case if the test for an interactive effect is removed from the model formula (or if the terms are in reverse order):</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod_TS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">treatment</span> <span class="op">+</span> <span class="va">size</span>, data <span class="op">=</span> <span class="va">unbalanced</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">mod_TS</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;           Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; treatment  1   35.3    35.3  0.3725    0.5586    </span>
+<span class="co">#&gt; size       1 4846.0  4846.0 51.0676 9.746e-05 ***</span>
+<span class="co">#&gt; Residuals  8  759.2    94.9                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mod_ST</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">size</span> <span class="op">+</span> <span class="va">treatment</span>, data <span class="op">=</span> <span class="va">unbalanced</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">mod_ST</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;           Df Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; size       1 4291.2  4291.2 45.2208 0.0001489 ***</span>
+<span class="co">#&gt; treatment  1  590.2   590.2  6.2193 0.0372980 *  </span>
+<span class="co">#&gt; Residuals  8  759.2    94.9                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>In both models we can see that there is a high F value associated with the size term
+<ul>
+<li>Therefore, this means that it is related to the response variable</li>
+</ul>
+</li>
+<li>However, initial size is not the explanatory variable of interest for this experiment
+<ul>
+<li>Size is a covariate that was added to the model to control for differences in initial size (if the initial size of the replicates were the same at the beginning of the experiment, then it wouldn’t have to be accounted for in th model)</li>
+</ul>
+</li>
+<li>The explanatory variable of whether plant removal was the one that is supposed to be addressed by this experiment</li>
+<li>Unfortunately the lack of balance has an outsized effect on the Sum of squares values for <strong>treatmentt</strong> in the two models</li>
+<li>
+<code>lm(height ~ treatment + size, data = unbalanced)</code>
+<ul>
+<li>treatment has a low F-value and a high P-value</li>
+</ul>
+</li>
+<li>`lm(height ~ size + treatment, data = unbalanced)
+<ul>
+<li>treatment has a much higher F-value and a small p-value</li>
+</ul>
+</li>
+<li>Now, the problem is that the two models produce different results
+<ul>
+<li>The solution is to just pick the model of the two that makes the most sense for the data</li>
+<li>The author says that that the model that controls for size and then assess for the effect of treatment is the more appropriate one in this case<br>
+</li>
+<li>He says that the whole objective of including the covariate for initial sisze was to adjust for its effects before addressing if there is an effect of treatment</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="anova-tables-versus-coefficients-when-f-and-t-can-disagree" class="section level2" number="14.4">
+<h2>
+<span class="header-section-number">14.4</span> ANOVA tables versus coefficients: When F and t can disagree<a class="anchor" aria-label="anchor" href="#anova-tables-versus-coefficients-when-f-and-t-can-disagree"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The previous section looked at how the order dependence of ANOVA tables for unbalanaced, non-orthanganol designs and the F-tests that the contain</li>
+<li>This section will look at estimates and t-tests in the table of coefficients</li>
+</ul>
+<p>Here are the estimates and t-testts for the model that gives priority to the treatment term:</p>
+<div class="sourceCode" id="cb213"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_TS</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = height ~ treatment + size, data = unbalanced)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -13.1053  -6.2105   0.8947   4.7895  14.8947 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)         98.58       4.47  22.055 1.89e-08 ***</span>
+<span class="co">#&gt; treatmentRemoval    15.26       6.12   2.494   0.0373 *  </span>
+<span class="co">#&gt; sizeSmall          -43.74       6.12  -7.146 9.75e-05 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 9.741 on 8 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.8654, Adjusted R-squared:  0.8318 </span>
+<span class="co">#&gt; F-statistic: 25.72 on 2 and 8 DF,  p-value: 0.0003281</span></code></pre></div>
+<p>Here is the same for the model that gives priority to intial size:</p>
+<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod_ST</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = height ~ size + treatment, data = unbalanced)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -13.1053  -6.2105   0.8947   4.7895  14.8947 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)         98.58       4.47  22.055 1.89e-08 ***</span>
+<span class="co">#&gt; sizeSmall          -43.74       6.12  -7.146 9.75e-05 ***</span>
+<span class="co">#&gt; treatmentRemoval    15.26       6.12   2.494   0.0373 *  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 9.741 on 8 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.8654, Adjusted R-squared:  0.8318 </span>
+<span class="co">#&gt; F-statistic: 25.72 on 2 and 8 DF,  p-value: 0.0003281</span></code></pre></div>
+<ul>
+<li>In contrasts to the sums of squares in the ANOVA tables, the estimates of the coefficients are unaffected by the order of the explanatory variables in the linear model formula</li>
+<li>This is due to the fact that they are not calculated sequentially
+<ul>
+<li>Instead, the estimate for each term is made after controlling for effects of all other variables in the model (including interactions)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="marginality-of-main-effects-and-interactions" class="section level2" number="14.5">
+<h2>
+<span class="header-section-number">14.5</span> Marginality of main effects and interactions<a class="anchor" aria-label="anchor" href="#marginality-of-main-effects-and-interactions"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Another glossed over issue is that of including or exlcuding the interaction term in the model if it isn’t significant</li>
+<li>The convention on this used to be that the model should be simplified and to remove the unsupported interactions</li>
+<li>More recently, thinking has changed to maintain interaction terms whether they are important or not</li>
+<li>In chapter 13, when we extended the typical ANCOVA into a general linear model that added a third variable, the author skipped over an important complexity:
+<ul>
+<li>The importance of the main effects varying depending on whether interactions were present in the model or not</li>
+</ul>
+</li>
+<li>We will revisit this example now:</li>
+</ul>
+<div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">xlabel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Ozone (µL • L"</span> <span class="op">^</span> <span class="st">"-1"</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ylabel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Log Yield (kg • ha"</span> <span class="op">^</span> <span class="st">"-1"</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span> 
+<span class="va">fig13_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">case1402</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">SO2</span>, 
+                                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co">#log transform the y values </span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Yield of 'William' soya beans under diverse stress conditions"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="va">xlabel</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="va">ylabel</span><span class="op">)</span> <span class="op">+</span> 
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.06</span><span class="op">)</span>, <span class="co">#set x axis range </span>
+                    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.06</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co">#x axis range and increments </span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">Stress</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">fig13_0</span>
+<span class="co">#&gt; `geom_smooth()` using formula 'y ~ x'</span></code></pre></div>
+<div class="inline-figure"><img src="014_lm-complexities_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<ul>
+<li>Interestingly, this complexity doesn’t necessarily arise because of having three variables in the model as it occurs in a model with just two variables (effects of water stress and pollutant (<span class="math inline">\(SO_2\)</span>) stress)</li>
+</ul>
+<p>Begin with the table of coefficients:</p>
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">SO2</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = log(William) ~ SO2 * Stress, data = case1402)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -0.33175 -0.17513 -0.00192  0.17254  0.39154 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                        Estimate Std. Error t value Pr(&gt;|t|)</span>
+<span class="co">#&gt; (Intercept)             8.16740    0.08926  91.499   &lt;2e-16</span>
+<span class="co">#&gt; SO2                    -3.41525    2.44456  -1.397    0.174</span>
+<span class="co">#&gt; StressWell-watered      0.19703    0.12624   1.561    0.131</span>
+<span class="co">#&gt; SO2:StressWell-watered -0.71339    3.45713  -0.206    0.838</span>
+<span class="co">#&gt;                           </span>
+<span class="co">#&gt; (Intercept)            ***</span>
+<span class="co">#&gt; SO2                       </span>
+<span class="co">#&gt; StressWell-watered        </span>
+<span class="co">#&gt; SO2:StressWell-watered    </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 0.2362 on 26 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.2585, Adjusted R-squared:  0.173 </span>
+<span class="co">#&gt; F-statistic: 3.022 on 3 and 26 DF,  p-value: 0.04769</span></code></pre></div>
+<ul>
+<li>Starting from the bottom of the table,
+<ul>
+<li>There is no support for an interaction between the two variables</li>
+<li>There isn’t clear evidence to support main effects either</li>
+<li>Looking at this table alone would present the idea that there is no effect of either variable alone or in combination on soya bean yield in this variety</li>
+</ul>
+</li>
+<li>However, the ANOVA table summary analysis presents a different picture of the data:</li>
+</ul>
+<div class="sourceCode" id="cb217"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">SO2</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: log(William)</span>
+<span class="co">#&gt;            Df  Sum Sq  Mean Sq F value  Pr(&gt;F)  </span>
+<span class="co">#&gt; SO2         1 0.26558 0.265581  4.7617 0.03833 *</span>
+<span class="co">#&gt; Stress      1 0.23764 0.237642  4.2608 0.04911 *</span>
+<span class="co">#&gt; SO2:Stress  1 0.00238 0.002375  0.0426 0.83812  </span>
+<span class="co">#&gt; Residuals  26 1.45014 0.055775                  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>ANOVA table output
+<ul>
+<li>The ANOVA table also lacks support for an interaction effect</li>
+<li>However, its F-tests for the main effects of water and <span class="math inline">\(SO_2\)</span> now support that there are effects from these variables on soya bean yield</li>
+<li>When we did a one-way anova for Darwin’s Maize data the anova table f-tests and summary table t-tests produced identical p values</li>
+<li>However,the summary and anova tables in this situation are different and their values are incongruent</li>
+</ul>
+</li>
+<li>There are various situations in which the ANOVA table F-tests and summary table t-tests can differ
+<ul>
+<li>Equivalency does require orthogonal designs, but this experimental design is balanced so that can’t be the reason for the mismatched results</li>
+<li>Additionally, the result of the model are not affected by the order of the terms (data not shown)</li>
+<li>In this case, the results are incongruent because the summary table and the anova table aren’t presenting the same tests despite the similiar row names</li>
+</ul>
+</li>
+<li>ANOVA table
+<ul>
+<li>First row - main effect of <span class="math inline">\(SO_2\)</span>
+</li>
+<li>Second row - main effect of water stress</li>
+<li>Third row - interaction</li>
+<li>Fourth row - residual error</li>
+</ul>
+</li>
+<li>Summary table of coefficients:
+<ul>
+<li>First row - intercept of the regression for <span class="math inline">\(SO_2\)</span> in the water stressed treatment level</li>
+<li>Second row - the slope of the regression in the first row</li>
+<li>Third row - difference in the slope for the well watered treatment</li>
+<li>Fourth row - difference in the intercept for the well watered treatment</li>
+</ul>
+</li>
+<li>In summary, while both tables have a row labled ‘SO2’
+<ul>
+<li>In the ANOVA table, the SO2 row quantifies how much variance is explained by the sulfure dioxide gradient and the F-value gives the ratio of variance relative to the unexplained noise</li>
+<li>In the summary table, the SO2 row estimates the slope of the regression of yield on sulfur dioxide concentration for the well-watered treatment after adjusting for the effects of the other terms in the model</li>
+</ul>
+</li>
+<li>When analyses are simple, these tables will produce identical results</li>
+<li>But when there are complexities such as non-orthagonality or the presence of an interaction (or both), then the two tables will not perform the same tests; thereby, producing differing results in their respective tables</li>
+<li>Understanding models and explaining their ambiguities
+<ul>
+<li>In the anova table, we see that there is not support for an interaction effect
+<ul>
+<li>However, ideally this would manifest itself as having an F-value of 1 if there is absolutely no interaction</li>
+</ul>
+</li>
+<li>In this case, the F value is much smaller than 1</li>
+</ul>
+</li>
+<li>This could be an example of a negative variance component (NVC)
+<ul>
+<li>These have two interpretations:
+<ul>
+<li>The NVC could indicate that something is wrong with the data and the analysis is not working as expected</li>
+<li>Also, the small variance could be an underestimate due to smapling variation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The author says that the design of the experiment looks appropriate and the analysis is solid so it must be the latter reason of sampling variation</li>
+<li>If we remove the interaction term from the model formula, then we find that the anova table and the table of coefficients come into agreement:</li>
+</ul>
+<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">SO2</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = log(William) ~ SO2 + Stress, data = case1402)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -0.3222 -0.1711 -0.0051  0.1737  0.3892 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                    Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)         8.17692    0.07507 108.920   &lt;2e-16 ***</span>
+<span class="co">#&gt; SO2                -3.77195    1.69764  -2.222   0.0349 *  </span>
+<span class="co">#&gt; StressWell-watered  0.17800    0.08469   2.102   0.0450 *  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 0.2319 on 27 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.2573, Adjusted R-squared:  0.2023 </span>
+<span class="co">#&gt; F-statistic: 4.677 on 2 and 27 DF,  p-value: 0.01803</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">SO2</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: log(William)</span>
+<span class="co">#&gt;           Df  Sum Sq  Mean Sq F value  Pr(&gt;F)  </span>
+<span class="co">#&gt; SO2        1 0.26558 0.265581  4.9367 0.03486 *</span>
+<span class="co">#&gt; Stress     1 0.23764 0.237642  4.4174 0.04504 *</span>
+<span class="co">#&gt; Residuals 27 1.45252 0.053797                  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li><p>Now both tables show that there is support for the main effects of <span class="math inline">\(SO_2\)</span> stress and water stress, which are biologically sensible</p></li>
+<li><p>This example shows that retaining unimportant interactions in the model can lead to missing the importance of the main effects</p></li>
+<li><p>To be safe, different models should be analysed to test for and without interaction effects</p></li>
+<li><p>It’s overall better to have greater sample sizes and even more important because a greater sample size will provide greater power to detect main effects even in the presence of non significant interactions</p></li>
+<li>
+<p>Retaining non significant interactions can also depend on the experiment’s aim</p>
+<ul>
+<li>When the focus is on hypothesis testing, simplifying to a minimal adequate model may be more consistent with the original aims</li>
+</ul>
+</li>
+<li><p>In conclusion, balanced, orthoganol designs are highly recommended to avoid complexities and ambiguities</p></li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></div>
+<div class="next"><a href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#linear-model-complexities"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="nav-link" href="#introduction-8"><span class="header-section-number">14.1</span> Introduction</a></li>
+<li>
+<a class="nav-link" href="#analysis-of-variance-for-balanced-designs"><span class="header-section-number">14.2</span> Analysis of variance for balanced designs</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#balance-and-orthogonality"><span class="header-section-number">14.2.1</span> Balance and orthogonality</a></li></ul>
+</li>
+<li><a class="nav-link" href="#analysis-of-variance-with-unbalanced-designs"><span class="header-section-number">14.3</span> Analysis of variance with unbalanced designs</a></li>
+<li><a class="nav-link" href="#anova-tables-versus-coefficients-when-f-and-t-can-disagree"><span class="header-section-number">14.4</span> ANOVA tables versus coefficients: When F and t can disagree</a></li>
+<li><a class="nav-link" href="#marginality-of-main-effects-and-interactions"><span class="header-section-number">14.5</span> Marginality of main effects and interactions</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/apicellap/NSwR.git/blob/master/014_lm-complexities.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/apicellap/NSwR.git/edit/master/014_lm-complexities.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Guide to The New Statistics with R</strong>" was written by Pete Apicella. It was last built on 2022-07-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

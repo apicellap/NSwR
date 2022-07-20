@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 11 Analysis of Variance | A Guide to The New Statistics with R</title>
+<meta name="author" content="Pete Apicella">
+<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta property="og:title" content="Chapter 11 Analysis of Variance | A Guide to The New Statistics with R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 11 Analysis of Variance | A Guide to The New Statistics with R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="11.1 ANOVA tables Pairwise t-tests become less effective as experimental designs become more complex The more pairwise comparisons there are, the greater the risk of generating false positives It...">
+<meta property="og:description" content="11.1 ANOVA tables Pairwise t-tests become less effective as experimental designs become more complex The more pairwise comparisons there are, the greater the risk of generating false positives It...">
+<meta name="twitter:description" content="11.1 ANOVA tables Pairwise t-tests become less effective as experimental designs become more complex The more pairwise comparisons there are, the greater the risk of generating false positives It...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Guide to The New Statistics with R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">About</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="motivation.html"><span class="header-section-number">2</span> Motivation</a></li>
+<li><a class="" href="description.html"><span class="header-section-number">3</span> Description</a></li>
+<li><a class="" href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></li>
+<li><a class="" href="estimation.html"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="" href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">7</span> Regression</a></li>
+<li><a class="" href="prediction.html"><span class="header-section-number">8</span> Prediction</a></li>
+<li><a class="" href="testing.html"><span class="header-section-number">9</span> Testing</a></li>
+<li><a class="" href="intervals.html"><span class="header-section-number">10</span> Intervals</a></li>
+<li><a class="active" href="analysis-of-variance.html"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="" href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></li>
+<li><a class="" href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="" href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="" href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></li>
+<li><a class="" href="glms-for-count-data.html"><span class="header-section-number">16</span> GLMs for Count Data</a></li>
+<li><a class="" href="binomial-glms.html"><span class="header-section-number">17</span> Binomial GLMs</a></li>
+<li><a class="" href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></li>
+<li><a class="" href="conclusions.html"><span class="header-section-number">19</span> Conclusions</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/apicellap/NSwR.git">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="analysis-of-variance" class="section level1" number="11">
+<h1>
+<span class="header-section-number">11</span> Analysis of Variance<a class="anchor" aria-label="anchor" href="#analysis-of-variance"><i class="fas fa-link"></i></a>
+</h1>
+<div id="anova-tables" class="section level2" number="11.1">
+<h2>
+<span class="header-section-number">11.1</span> ANOVA tables<a class="anchor" aria-label="anchor" href="#anova-tables"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Pairwise t-tests become less effective as experimental designs become more complex
+<ul>
+<li>The more pairwise comparisons there are, the greater the risk of generating false positives</li>
+</ul>
+</li>
+<li>It can be useful to instead use an approach such as the analysis of variance</li>
+<li>Generally ANOVAs deal with categorical explanatory variables, but there are versions can evaluate continuous explanatory variables too</li>
+<li>We can use ANOVA to evaluate Darwin’s maize data</li>
+</ul>
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"arm"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SemiPar"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SMPracticals"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://matt-wand.utsacademics.info/SPmanu.pdf">SemiPar</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://statwww.epfl.ch/davison/SM/">SMPracticals</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div id="anova-tables-darwins-maize" class="section level2" number="11.2">
+<h2>
+<span class="header-section-number">11.2</span> ANOVA tables: Darwin’s maize<a class="anchor" aria-label="anchor" href="#anova-tables-darwins-maize"><i class="fas fa-link"></i></a>
+</h2>
+<p>Simple linear model from chapter 6:</p>
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ls1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">type</span>, data <span class="op">=</span> <span class="va">darwin</span><span class="op">)</span></code></pre></div>
+<ul>
+<li>Since there is only one explanatory variable, the model is called a one-way ANOVA</li>
+<li>An anova aims to quantify the overall variability within a dataset, then parse the variability between and within groups (i.e. self and cross pollinated offspring)
+<ul>
+<li>Then calculate a signal:noise ratio
+<ul>
+<li>The greater the signal to noise ratio, the more confidence we can have about whether or not the test has detected a real effect</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The variability is quantified through a method known as least squares
+<ul>
+<li>This method calculates the overall variability (the total sum of squares, SST) by measuring the differences between individual data points and a reference point, or ‘intercept’:</li>
+<li>Often the most intuitive reference point to use is the grand mean</li>
+</ul>
+</li>
+</ul>
+<div class="figure">
+<span style="display:block;" id="fig:figA"></span>
+<img src="fig11A.png" alt="Figure 11-1A. Total Sum of Squares" width="65%"><p class="caption">
+Figure 11.1: Figure 11-1A. Total Sum of Squares
+</p>
+</div>
+<ul>
+<li>Horizontal line: the grand (overall) mean</li>
+<li>Vertical lines: measure the differences between the data point and the reference (the horizontal line)
+<ul>
+<li>These differences (distances to the reference line) are squared and summed</li>
+</ul>
+</li>
+<li>The most intuitive reference point is the grand mean, but any value can be used
+<ul>
+<li>Statistical software usually choose a different reference point</li>
+</ul>
+</li>
+<li>Next, least squares quantifies how much of the overall variability is explained by classifying the datapoints into treatment groups:</li>
+</ul>
+<div class="figure">
+<span style="display:block;" id="fig:figB"></span>
+<img src="fig11B.png" alt="Figure 11-1B. Treatment Sum of Squares" width="65%"><p class="caption">
+Figure 11.2: Figure 11-1B. Treatment Sum of Squares
+</p>
+</div>
+<ul>
+<li>figure b
+<ul>
+<li>The next step is called least squares
+<ul>
+<li>Least squares quantifies how much overall variability is explained by classifying the datta points into treatment groups</li>
+</ul>
+</li>
+<li>The vertical lines show the differences between the overall mean (the solid vertical line) and the treatment mean (the row of red crosses or black circles (these are also the fitted values))</li>
+</ul>
+</li>
+<li>Finally, the residual variation is explained:
+<div class="figure">
+<span style="display:block;" id="fig:figC"></span>
+<img src="fig11C.png" alt="Figure 11-1C. Error sum of squares" width="65%"><p class="caption">
+Figure 11.3: Figure 11-1C. Error sum of squares
+</p>
+</div>
+</li>
+<li>figure c
+<ul>
+<li>After the treatment groups’ variability is subtracted from the total variability, the unexplained residual variability is leftover</li>
+<li>The vertical dotted lines show the differences between the observed data values and the treatment level means</li>
+</ul>
+</li>
+<li>Overall, the least squares method quantifies the overall varability and splits it into signal and noise
+<ul>
+<li>It works with the sums of squared distances between the individual data points and the means - the ‘sum of squared differences’ or ‘sum of squares (SS)’</li>
+</ul>
+</li>
+</ul>
+<p>Draw up an analysis of variance table for the model:</p>
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">ls1</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;           Df  Sum Sq Mean Sq F value  Pr(&gt;F)  </span>
+<span class="co">#&gt; type       1  51.352  51.352  5.9395 0.02141 *</span>
+<span class="co">#&gt; Residuals 28 242.083   8.646                  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>output:
+<ul>
+<li>first unnamed column - shows source of variation (type and Residuals)
+<ul>
+<li>Sources of variation: pollination treatment (signal) or to the residual variation (noise)</li>
+</ul>
+</li>
+<li>
+<strong>Df</strong> (degrees of freedom) - this is an indication of the number of treatment levels and experimental units (sample size)</li>
+</ul>
+</li>
+</ul>
+<center>
+<span class="math inline">\(total \; df_{sample \; size} = N-1\)</span>
+</center>
+<ul>
+<li>
+<strong>Sum Sq</strong> = sum of squares
+<ul>
+<li>R doesn’t provide the total variation but to find that we would just have to add the two values from SumSq up</li>
+<li>
+<strong>Mean Sq</strong> is the same as the variance
+<ul>
+<li>The mean square is calculated by dividing the row’s Sum Sq value by the corresponding Df value</li>
+<li>Essentially, this gives an average amount of variability per treatment level or per experimental unit</li>
+<li>The mean square for the residual is calculated by pooling the variation within both samples in order to get a better estimate of the overall noise</li>
+<li>This is very useful when there are a number of different treatments with a smaller sample size</li>
+<li>Linear models almost always rely on the pooled estimate of variance</li>
+<li>Because of this, the standard errors for the estimates of the means will only differ if the treatment groups have different sample sizes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="hypothesis-testing-f-values" class="section level2" number="11.3">
+<h2>
+<span class="header-section-number">11.3</span> Hypothesis testing: F-values<a class="anchor" aria-label="anchor" href="#hypothesis-testing-f-values"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The signal to noise ratio is calculated by dividing the treatment variance (mean square) by the residual error variance (mean square) to produce the F-value which is given in the fifth column:</li>
+</ul>
+<center>
+<span class="math inline">\(F \; value = \frac{Mean \; square \;treatment}{Mean \; square \;residual}\)</span>
+</center>
+<ul>
+<li>In the anova table, the signal estimated signal (51.352) is 5.9x larger than the estimated noise (8.646)
+<ul>
+<li>The larger the signal to noise ratio, the more confident we can be that it is not a false positive</li>
+</ul>
+</li>
+<li>the sixth column - the <strong>p value</strong>; says that there is a 2% chance of observing a signal to noise ratio of at least this large if the null hypothesis is true (i.e. there is actually no effect of pollination type)
+<ul>
+<li>If we repeated Darwins experiment over and over, then we would expect, 2% of the time, there would be actually no effect of pollination type then we would expect an F value of the size or larger</li>
+<li>Critics argue that P = 0.05 creates too many false positives and a minimum P value of &lt; 0.004 would be more appropriate</li>
+<li>Generally, the larger the sample, the lower the p value (due to increased statistical power)</li>
+<li>This makes it hard to use p values to compare the strength of results from different analyses when sample sizes vary</li>
+<li>p values generally create a dichotomy of significant and non-significant result
+-Instead, estimates and confidence intervals can be used</li>
+</ul>
+</li>
+</ul>
+<p>Recreate the p value by plugging in the values from the anova table:</p>
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span>
+  <span class="fl">5.9395</span>,  <span class="co">#the F value</span>
+  <span class="fl">1</span>,       <span class="co">#degrees of freedom for the signal (numerator)</span>
+  <span class="fl">28</span>,      <span class="co">#degrees of freedom for the noise (denominator)</span>
+  lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#prints the probability of being in the tail of the distribution with an F-value =&gt; the observed value (5.9) in this case approximately 2%</span>
+<span class="co">#&gt; [1] 0.02141466</span></code></pre></div>
+<ul>
+<li>Often p values are presented with no supporting information, but readers can’t interpret these without knowing from what test they come and the number of degrees of freedom</li>
+<li>author’s suggested description of the analyses:
+<div class="figure">
+<span style="display:block;" id="fig:fig-txt"></span>
+<img src="fig_text.png" alt="Figure 11-1C. Error sum of squares" width="65%"><p class="caption">
+Figure 11.4: Figure 11-1C. Error sum of squares
+</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="two-way-anova" class="section level2" number="11.4">
+<h2>
+<span class="header-section-number">11.4</span> Two-way ANOVA<a class="anchor" aria-label="anchor" href="#two-way-anova"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>A two-way anova is an analysis that deals with two explanatory variables</li>
+<li>In this example, we will continue to use Darwin’s maize data</li>
+<li>The new explanatory variable we will use is ‘plant pairing’</li>
+</ul>
+<p>Create linear model that factors in the plant pairings:</p>
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ls2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">height</span> <span class="op">~</span> <span class="va">type</span> <span class="op">+</span> <span class="va">pair</span>, data <span class="op">=</span> <span class="va">darwin</span><span class="op">)</span></code></pre></div>
+<p>Compare the tables for one-way and two-way anova:</p>
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>show.signif.stars <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">ls1</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;           Df  Sum Sq Mean Sq F value  Pr(&gt;F)</span>
+<span class="co">#&gt; type       1  51.352  51.352  5.9395 0.02141</span>
+<span class="co">#&gt; Residuals 28 242.083   8.646</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">ls2</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: height</span>
+<span class="co">#&gt;           Df  Sum Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="co">#&gt; type       1  51.352  51.352  4.6139 0.0497</span>
+<span class="co">#&gt; pair      14  86.264   6.162  0.5536 0.8597</span>
+<span class="co">#&gt; Residuals 14 155.820  11.130</span></code></pre></div>
+<ul>
+<li>From the two way anova, we find one “unsatisfying” thing about darwin’s experiment: the pairing doesn’t work the way he intended</li>
+<li>If it worked, then we would have expected its Mean Sq value to be larger than that of the Residuals (it would have explained more of the variability than the noise does)
+<ul>
+<li>Plant pairing only explains about 8.8% of the total variation</li>
+</ul>
+</li>
+<li>Since the mean sq for pair (6.162) is smaller than the mean sq for residuals (11.130), this implies a ‘negative variance component’. Could be two explanations for this:
+<ul>
+<li>Sampling variability</li>
+<li>An issue with the experimental design
+<ul>
+<li>Darwin didn’t randomize his experimental units (the experiment pre-dates this principal)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="intervals.html"><span class="header-section-number">10</span> Intervals</a></div>
+<div class="next"><a href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#analysis-of-variance"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="nav-link" href="#anova-tables"><span class="header-section-number">11.1</span> ANOVA tables</a></li>
+<li><a class="nav-link" href="#anova-tables-darwins-maize"><span class="header-section-number">11.2</span> ANOVA tables: Darwin’s maize</a></li>
+<li><a class="nav-link" href="#hypothesis-testing-f-values"><span class="header-section-number">11.3</span> Hypothesis testing: F-values</a></li>
+<li><a class="nav-link" href="#two-way-anova"><span class="header-section-number">11.4</span> Two-way ANOVA</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/apicellap/NSwR.git/blob/master/011_ANOVA.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/apicellap/NSwR.git/edit/master/011_ANOVA.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Guide to The New Statistics with R</strong>" was written by Pete Apicella. It was last built on 2022-07-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 19 Conclusions | A Guide to The New Statistics with R</title>
+<meta name="author" content="Pete Apicella">
+<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta property="og:title" content="Chapter 19 Conclusions | A Guide to The New Statistics with R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 19 Conclusions | A Guide to The New Statistics with R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="19.1 Introduction This text began with an analysis of the Space Shuttle Challenger distaster The author concludes the book by re-analyzing the data using keypoints covered in the past 17 chapters...">
+<meta property="og:description" content="19.1 Introduction This text began with an analysis of the Space Shuttle Challenger distaster The author concludes the book by re-analyzing the data using keypoints covered in the past 17 chapters...">
+<meta name="twitter:description" content="19.1 Introduction This text began with an analysis of the Space Shuttle Challenger distaster The author concludes the book by re-analyzing the data using keypoints covered in the past 17 chapters...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Guide to The New Statistics with R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">About</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="motivation.html"><span class="header-section-number">2</span> Motivation</a></li>
+<li><a class="" href="description.html"><span class="header-section-number">3</span> Description</a></li>
+<li><a class="" href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></li>
+<li><a class="" href="estimation.html"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="" href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">7</span> Regression</a></li>
+<li><a class="" href="prediction.html"><span class="header-section-number">8</span> Prediction</a></li>
+<li><a class="" href="testing.html"><span class="header-section-number">9</span> Testing</a></li>
+<li><a class="" href="intervals.html"><span class="header-section-number">10</span> Intervals</a></li>
+<li><a class="" href="analysis-of-variance.html"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="" href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></li>
+<li><a class="" href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="" href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="" href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></li>
+<li><a class="" href="glms-for-count-data.html"><span class="header-section-number">16</span> GLMs for Count Data</a></li>
+<li><a class="" href="binomial-glms.html"><span class="header-section-number">17</span> Binomial GLMs</a></li>
+<li><a class="" href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></li>
+<li><a class="active" href="conclusions.html"><span class="header-section-number">19</span> Conclusions</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/apicellap/NSwR.git">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="conclusions" class="section level1" number="19">
+<h1>
+<span class="header-section-number">19</span> Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-10" class="section level2" number="19.1">
+<h2>
+<span class="header-section-number">19.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-10"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>This text began with an analysis of the Space Shuttle <em>Challenger</em> distaster</li>
+<li>The author concludes the book by re-analyzing the data using keypoints covered in the past 17 chapters</li>
+</ul>
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"arm"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"faraway"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"patchwork"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Sleuth3"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://people.bath.ac.uk/jjf23/">faraway</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-forge.r-project.org/projects/sleuth2/">Sleuth3</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div id="a-binomial-glm-analysis-of-the-challenger-binary-data" class="section level2" number="19.2">
+<h2>
+<span class="header-section-number">19.2</span> A binomial GLM analysis of the <em>Challenger</em> binary data<a class="anchor" aria-label="anchor" href="#a-binomial-glm-analysis-of-the-challenger-binary-data"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The fuel leaks key to this dataset can be expressed in binary form</li>
+</ul>
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">urlfile</span><span class="op">=</span><span class="st">"https://raw.githubusercontent.com/apicellap/data/main/ex2011.csv"</span>
+<span class="va">ex2011x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="va">urlfile</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">ex2011x</span><span class="op">)</span>
+<span class="co">#&gt; 'data.frame':    24 obs. of  2 variables:</span>
+<span class="co">#&gt;  $ Temperature: int  53 56 57 63 66 67 67 67 68 69 ...</span>
+<span class="co">#&gt;  $ Failure    : chr  "Yes" "Yes" "Yes" "No" ...</span></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ex2011x</span><span class="op">)</span>
+<span class="co">#&gt;   Temperature Failure</span>
+<span class="co">#&gt; 1          53     Yes</span>
+<span class="co">#&gt; 2          56     Yes</span>
+<span class="co">#&gt; 3          57     Yes</span>
+<span class="co">#&gt; 4          63      No</span>
+<span class="co">#&gt; 5          66      No</span>
+<span class="co">#&gt; 6          67      No</span></code></pre></div>
+<p>This dataset contains an error, rectify it:</p>
+<div class="sourceCode" id="cb292"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ex2011x</span><span class="op">[</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"Yes"</span> <span class="co">#It is always better document changes in a script and not alter the original dataframe</span></code></pre></div>
+<p>Plot Failure vs. launch temperature:</p>
+<div class="sourceCode" id="cb293"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig19_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ex2011x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Temperature</span>, y <span class="op">=</span> <span class="va">Failure</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">fig19_1</span></code></pre></div>
+<div class="inline-figure"><img src="019_conclusion_files/figure-html/f1-1.png" width="672"></div>
+<p>Recharacterize binary form of data:</p>
+<div class="sourceCode" id="cb294"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ex2011x</span> <span class="op">&lt;-</span> <span class="va">ex2011x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>failure <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">ex2011x</span><span class="op">$</span><span class="va">Failure</span> <span class="op">==</span> <span class="st">"Yes"</span>,<span class="fl">1</span> , <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="co">#if this statement is true then in column entitled 'failure' put 1, else put 0 </span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ex2011x</span><span class="op">)</span>
+<span class="co">#&gt;   Temperature Failure failure</span>
+<span class="co">#&gt; 1          53     Yes       1</span>
+<span class="co">#&gt; 2          56     Yes       1</span>
+<span class="co">#&gt; 3          57     Yes       1</span>
+<span class="co">#&gt; 4          63     Yes       1</span>
+<span class="co">#&gt; 5          66      No       0</span>
+<span class="co">#&gt; 6          67      No       0</span></code></pre></div>
+<p>Create a binomial GLM:</p>
+<div class="sourceCode" id="cb295"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">failure</span> <span class="op">~</span> <span class="va">Temperature</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ex2011x</span><span class="op">)</span></code></pre></div>
+<p>Extract the model’s coefficients:</p>
+<div class="sourceCode" id="cb296"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>
+<span class="co">#&gt; (Intercept) Temperature </span>
+<span class="co">#&gt;  14.1700665  -0.2155279</span></code></pre></div>
+<p>Examine the 95% CI:</p>
+<div class="sourceCode" id="cb297"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>
+<span class="co">#&gt; Waiting for profiling to be done...</span>
+<span class="co">#&gt;                  2.5 %      97.5 %</span>
+<span class="co">#&gt; (Intercept)  3.3162485 31.83327461</span>
+<span class="co">#&gt; Temperature -0.4724172 -0.05831438</span></code></pre></div>
+<ul>
+<li>Based on the negative slope and the 95% CI, there is clearly a relationship between failure and temperature
+<ul>
+<li>The probability of a fuel leak increases in colder conditions</li>
+</ul>
+</li>
+</ul>
+<p>Plot the relationship:</p>
+<div class="sourceCode" id="cb298"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig19_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ex2011x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Temperature</span>, y <span class="op">=</span> <span class="va">failure</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"glm"</span>, method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fig19_2</span>
+<span class="co">#&gt; `geom_smooth()` using formula 'y ~ x'</span></code></pre></div>
+<div class="inline-figure"><img src="019_conclusion_files/figure-html/unnamed-chunk-10-1.png" width="672"></div>
+<ul>
+<li>The plot shows a wide degree of uncertainty around the regression line</li>
+<li>Even though there is a lot of uncertainty, the uncertainty encompasses a high degree for the system to fail</li>
+<li>The temperature at the day of catastrophic launch was 30 degrees, which is well below the scope of the model</li>
+<li>Still we can extrapolate from the data (taking with it a large grain of salt) through the binomial GLM</li>
+</ul>
+<p>Taking sample size into account we can get the t value for a two-tailed 95% CI when n = 21:</p>
+<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t21</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, <span class="fl">21</span><span class="op">)</span>
+<span class="va">t21</span>
+<span class="co">#&gt; [1] 2.079614</span></code></pre></div>
+<p>Use the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function to make predictions from the GLM:</p>
+<div class="sourceCode" id="cb300"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">predicts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">m1</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Temperature <span class="op">=</span> <span class="fl">30</span><span class="op">:</span><span class="fl">85</span><span class="op">)</span>, 
+                    se <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>Create a dataframe of predicted ranges of values around the regression curve</p>
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faraway/man/ilogit.html">ilogit</a></span><span class="op">(</span><span class="va">predicts</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span> <span class="co">#ilogit() back transforms from logit to probability values </span>
+<span class="va">upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/faraway/man/ilogit.html">ilogit</a></span><span class="op">(</span><span class="va">predicts</span><span class="op">$</span><span class="va">fit</span> <span class="op">+</span> <span class="va">t21</span> <span class="op">*</span> <span class="va">predicts</span><span class="op">$</span><span class="va">se.fit</span><span class="op">)</span>
+<span class="va">lower</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/faraway/man/ilogit.html">ilogit</a></span><span class="op">(</span><span class="va">predicts</span><span class="op">$</span><span class="va">fit</span> <span class="op">-</span> <span class="va">t21</span> <span class="op">*</span> <span class="va">predicts</span><span class="op">$</span><span class="va">se.fit</span><span class="op">)</span>
+<span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">upper</span>, <span class="va">lower</span>, Temperature <span class="op">=</span> <span class="fl">30</span><span class="op">:</span><span class="fl">85</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">)</span>
+<span class="co">#&gt;         fit     upper     lower Temperature</span>
+<span class="co">#&gt; 1 0.9995493 0.9999999 0.4150330          30</span>
+<span class="co">#&gt; 2 0.9994409 0.9999998 0.4122349          31</span>
+<span class="co">#&gt; 3 0.9993066 0.9999997 0.4094173          32</span>
+<span class="co">#&gt; 4 0.9991399 0.9999995 0.4065783          33</span>
+<span class="co">#&gt; 5 0.9989333 0.9999992 0.4037160          34</span>
+<span class="co">#&gt; 6 0.9986771 0.9999988 0.4008283          35</span></code></pre></div>
+<p>Redraw the figure with extrapolated probability values for the new range of Temperature values:</p>
+<div class="sourceCode" id="cb302"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig19_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">ex2011x</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Temperature</span>, y <span class="op">=</span> <span class="va">failure</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">80</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">predictions</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Temperature</span>, <span class="va">fit</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">predictions</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Temperature</span>, <span class="va">upper</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">predictions</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">Temperature</span>, <span class="va">lower</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span> 
+<span class="va">fig19_3</span>
+<span class="co">#&gt; Warning: Removed 1 rows containing missing values</span>
+<span class="co">#&gt; (geom_point).</span>
+<span class="co">#&gt; Warning: Removed 5 row(s) containing missing values (geom_path).</span>
+<span class="co">#&gt; Removed 5 row(s) containing missing values (geom_path).</span>
+<span class="co">#&gt; Removed 5 row(s) containing missing values (geom_path).</span></code></pre></div>
+<div class="inline-figure"><img src="019_conclusion_files/figure-html/f3-1.png" width="672"></div>
+<ul>
+<li>The prediction even at this lowest level of confidence is an unacceptably high probability of failure</li>
+</ul>
+<p>Check assumptions:</p>
+<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">resid</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span> 
+<span class="va">fig19_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/arm/man/binnedplot.html">binnedplot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="019_conclusion_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<ul>
+<li>Because most of the values lie outside of the binned zones, the binomial GLM is not a good model for this data (even though they are binary)</li>
+<li>Other attempts have been made to model the data (Dalal et al. 1989), but there isn’t yet an ideal solution for this data</li>
+<li>Still, even with residuals not supporting a model, it was a poor decision to not even look at any of the data and recommend a launch at on day with much lower launch temperature than ever tested before</li>
+<li>The author goes on to talk about how statistics is just one tool that must be combined with others
+<ul>
+<li>For example, these o-rings placed in ice water become brittle too</li>
+<li>Other disciplines could have been consulted too</li>
+</ul>
+</li>
+<li>An imperfect statistical analysis could have saved the lives of seven astronauts</li>
+</ul>
+</div>
+<div id="recommendations" class="section level2" number="19.3">
+<h2>
+<span class="header-section-number">19.3</span> Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"><i class="fas fa-link"></i></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li><em>Make your research reproducible</em></li>
+</ol>
+<ul>
+<li>This can be accomplished through the use of Rmarkdown/quarto to make research reports</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><em>A picture is worth a thousands words</em></li>
+</ol>
+<ul>
+<li>Graphs are the best way to present data</li>
+<li>Graph data before analyzing it to understand it</li>
+<li>Use graphs to assess assumptions/test diagnostics</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><em>Keep it simple</em></li>
+</ol>
+<ul>
+<li>Take the time to explore the data and look at estimates/intervals</li>
+<li>Get a sense of effect sizes and uncertainties</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><em>Consider more than one model</em></li>
+</ol>
+<ul>
+<li>Present 2-3 of the best models to help showcase the uncertain path towards model selection</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li><em>Attempt the P-free challenger</em></li>
+</ol>
+<ul>
+<li>Focus more on effect sizes and estimates</li>
+</ul>
+<ol start="6" style="list-style-type: decimal">
+<li><em>Report estimates, intervals, and sample sizes</em></li>
+</ol>
+<ul>
+<li>The reproducibility crisis could be combatted by the reporting of these elements in the results section
+<ul>
+<li>This would facilitate meta-analysis</li>
+</ul>
+</li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li><em>Go back to basics</em></li>
+</ol>
+<ul>
+<li>Understand the basics of error bars and intervals plus how to interpret them</li>
+</ul>
+<ol start="8" style="list-style-type: decimal">
+<li><em>Make a focused plan of analysis</em></li>
+</ol>
+<ul>
+<li>Plan how data will be analyzed in advance</li>
+<li>Meet all assumptions</li>
+</ul>
+<ol start="9" style="list-style-type: decimal">
+<li><em>Give P-values the respect they deserve (and no more)</em></li>
+</ol>
+<ul>
+<li>If assumptions are not met, you end up with mushy p-values</li>
+<li>The use of p-values should be implemented when all assumptions are met and the satisfaction of all conditions that they depend on so that the values are as meaningful as possible</li>
+</ul>
+<ol start="10" style="list-style-type: decimal">
+<li><em>Focus on repeatability, not small p-values</em></li>
+</ol>
+<ul>
+<li>No matter how small a p-value (or how high the level of confidence), the result can still be a false positive</li>
+<li>Scientific results are truly established when it is shown that they are repeatable</li>
+<li>Author says that science values novelty too much at the expense of establishing a solid foundation</li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#conclusions"><span class="header-section-number">19</span> Conclusions</a></li>
+<li><a class="nav-link" href="#introduction-10"><span class="header-section-number">19.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#a-binomial-glm-analysis-of-the-challenger-binary-data"><span class="header-section-number">19.2</span> A binomial GLM analysis of the Challenger binary data</a></li>
+<li><a class="nav-link" href="#recommendations"><span class="header-section-number">19.3</span> Recommendations</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/apicellap/NSwR.git/blob/master/019_conclusion.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/apicellap/NSwR.git/edit/master/019_conclusion.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Guide to The New Statistics with R</strong>" was written by Pete Apicella. It was last built on 2022-07-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

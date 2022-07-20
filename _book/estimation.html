@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 5 Estimation | A Guide to The New Statistics with R</title>
+<meta name="author" content="Pete Apicella">
+<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta property="og:title" content="Chapter 5 Estimation | A Guide to The New Statistics with R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 5 Estimation | A Guide to The New Statistics with R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="5.1 Introduction In Darwin’s pollination experiments, he wanted to find out whether selfing is detrimental to plant fitness. This question concerns the differences in plant height This chapter...">
+<meta property="og:description" content="5.1 Introduction In Darwin’s pollination experiments, he wanted to find out whether selfing is detrimental to plant fitness. This question concerns the differences in plant height This chapter...">
+<meta name="twitter:description" content="5.1 Introduction In Darwin’s pollination experiments, he wanted to find out whether selfing is detrimental to plant fitness. This question concerns the differences in plant height This chapter...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Guide to The New Statistics with R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">About</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="motivation.html"><span class="header-section-number">2</span> Motivation</a></li>
+<li><a class="" href="description.html"><span class="header-section-number">3</span> Description</a></li>
+<li><a class="" href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></li>
+<li><a class="active" href="estimation.html"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="" href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">7</span> Regression</a></li>
+<li><a class="" href="prediction.html"><span class="header-section-number">8</span> Prediction</a></li>
+<li><a class="" href="testing.html"><span class="header-section-number">9</span> Testing</a></li>
+<li><a class="" href="intervals.html"><span class="header-section-number">10</span> Intervals</a></li>
+<li><a class="" href="analysis-of-variance.html"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="" href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></li>
+<li><a class="" href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="" href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="" href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></li>
+<li><a class="" href="glms-for-count-data.html"><span class="header-section-number">16</span> GLMs for Count Data</a></li>
+<li><a class="" href="binomial-glms.html"><span class="header-section-number">17</span> Binomial GLMs</a></li>
+<li><a class="" href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></li>
+<li><a class="" href="conclusions.html"><span class="header-section-number">19</span> Conclusions</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/apicellap/NSwR.git">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="estimation" class="section level1" number="5">
+<h1>
+<span class="header-section-number">5</span> Estimation<a class="anchor" aria-label="anchor" href="#estimation"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-2" class="section level2" number="5.1">
+<h2>
+<span class="header-section-number">5.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-2"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>In Darwin’s pollination experiments, he wanted to find out whether selfing is detrimental to plant fitness. This question concerns the differences in plant height</li>
+<li>This chapter addresses that by estimating the mean heights of the two pollination treatments and the difference between them + quantify our confidence in the estimates which are used to determine whether they are statistically different</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"arm"</span>, repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Sleuth3"</span>, repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"SMPracticals"</span>, repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-forge.r-project.org/projects/sleuth2/">Sleuth3</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://statwww.epfl.ch/davison/SM/">SMPracticals</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div id="quick-tests" class="section level2" number="5.2">
+<h2>
+<span class="header-section-number">5.2</span> Quick tests<a class="anchor" aria-label="anchor" href="#quick-tests"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Author talks about Tukey quick tests to assess variability of groups of data (treatments)
+<ul>
+<li>It is makeshift because there are outliers in the data and you can’t actually run this test if there are outliers</li>
+<li>But he ignores them for the purpose of the exercise</li>
+</ul>
+</li>
+<li>The test is supposed to determine whether there is a relative shift in y values in one group compared to the other:</li>
+</ul>
+<p>Plot the quick tukey test:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig5_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">darwin</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">type</span>, y <span class="op">=</span> <span class="va">height</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18.1</span>, <span class="fl">20.5</span><span class="op">)</span>, <span class="co">#draw line that intercepts with the y axis at these y values </span>
+             colour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span>,  <span class="co">#give these dotted lines these colors, respectively </span>
+              linetype <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> <span class="co">#linetype 2 is a dotted line; 1 is solid </span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">25</span><span class="op">)</span>, minor_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">25</span>,<span class="fl">1</span><span class="op">)</span>,
+                     breaks <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">25</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> 
+              
+<span class="va">fig5_1</span>    </code></pre></div>
+<div class="inline-figure"><img src="05_estimation_files/figure-html/fig-5-1-1.png" width="672"></div>
+<ul>
+<li>Figure takeaways:
+<ul>
+<li>If the outliers were ignored, then the test would show a fairly strong upward shift in height values for the cross pollinated progeny relative to the selfed progeny</li>
+<li>This would support Darwin’s hypothesis about fitness and outcrossing</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="differences-between-groups" class="section level2" number="5.3">
+<h2>
+<span class="header-section-number">5.3</span> Differences between groups<a class="anchor" aria-label="anchor" href="#differences-between-groups"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Since Darwin’s data consists of matched pairs of seedlings, it is better to work with differences in height rather than the treatment means</li>
+</ul>
+<p>Calculate difference between each value in Cross and Self data in a new column:</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ex0428</span><span class="op">$</span><span class="va">difference</span> <span class="op">&lt;-</span> <span class="va">ex0428</span><span class="op">$</span><span class="va">Cross</span> <span class="op">-</span> <span class="va">ex0428</span><span class="op">$</span><span class="va">Self</span> 
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ex0428</span><span class="op">)</span>
+<span class="co">#&gt;   Cross  Self difference</span>
+<span class="co">#&gt; 1 23.50 17.38       6.12</span>
+<span class="co">#&gt; 2 12.00 20.38      -8.38</span>
+<span class="co">#&gt; 3 21.00 20.00       1.00</span>
+<span class="co">#&gt; 4 22.00 20.00       2.00</span>
+<span class="co">#&gt; 5 19.13 18.38       0.75</span>
+<span class="co">#&gt; 6 21.50 18.63       2.87</span></code></pre></div>
+<p>Calculate the mean of the difference column:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">ex0428</span><span class="op">$</span><span class="va">difference</span><span class="op">)</span> 
+<span class="co">#&gt; [1] 2.616667</span></code></pre></div>
+<p>Calculate the sd of the difference column:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">ex0428</span><span class="op">$</span><span class="va">difference</span><span class="op">)</span>
+<span class="co">#&gt; [1] 4.719373</span></code></pre></div>
+<ul>
+<li>Standard deviation is for assessing the value of variation within one sample (population)
+<ul>
+<li>It’s the average distance between a datapoint and the mean</li>
+<li>It’s not for testing how confident we are that a difference between samples exists</li>
+</ul>
+</li>
+<li>That’s where standard error and confidence intervals come in</li>
+</ul>
+</div>
+<div id="standard-deviations-and-standard-errors" class="section level2" number="5.4">
+<h2>
+<span class="header-section-number">5.4</span> Standard deviations and standard errors<a class="anchor" aria-label="anchor" href="#standard-deviations-and-standard-errors"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Again, standard deviation is a descriptive statistic that means the variability (dispersion) in a sample of data
+<ul>
+<li>It applies to individual datapoints</li>
+</ul>
+</li>
+<li>Shifting focus from individual datapoints to comparing means, we need to utilize the standard error</li>
+<li>Standard error is a measure of the variance with the sample size and the standard deviation factored in:</li>
+</ul>
+<center>
+<span class="math inline">\(SE = \sqrt{\frac{s^2}{n}}\)</span>
+</center>
+<ul>
+<li>
+<span class="math inline">\(\sigma\)</span> would be used when dealing with the population as whole</li>
+<li>
+<span class="math inline">\(s^2\)</span> - the sample variance (again, <span class="math inline">\(\sigma^2\)</span> is used when the entire population is being addressed)</li>
+<li>
+<span class="math inline">\(n\)</span> = the sample size
+<ul>
+<li>Standard error describes the variability around the mean that would be expected among samples if the experiment was repeated over and over
+<ul>
+<li>The new mean of the data collected in these experiments would likely fall within the SE bounds</li>
+</ul>
+</li>
+<li>Since sample size is in the denominator, a higher sample size decreases the SE value.</li>
+<li>This reflects a decreasing level of uncertainty in the data, but it is a diminishing returns relationship. To halve uncertainty, sample size must be quadrupled</li>
+</ul>
+</li>
+</ul>
+<p>Calculate the standard error of the mean difference in height:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">ex0428</span><span class="op">$</span><span class="va">difference</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">15</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, nsmall <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co">#round to 2 decimal places </span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span>
+<span class="co">#&gt; [1] 1.22</span></code></pre></div>
+<p>Assess the distribution of the data:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">darwin</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">height</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins<span class="op">=</span><span class="fl">25</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="05_estimation_files/figure-html/data-histogram-05-1.png" width="672"></div>
+<ul>
+<li>A null hypothesis can be used understand how SEs can be used to infer the level of confidence in the data and whether there is a difference between groups</li>
+<li>Null hypothesis - there is no difference (a difference of 0) between the crossed and selfed progeny in terms of their mean height
+<ul>
+<li>The mean difference is 2.62 inches</li>
+<li>Given the mean difference, need to determine how likely is it to have estimated this difference (of 2.62) if the null hypothesis is correct and there is no difference between treatments. A normal distribution is used to ascertain this.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="the-normal-distribution-and-the-central-limit-theorem" class="section level2" number="5.5">
+<h2>
+<span class="header-section-number">5.5</span> The normal distribution and the central limit theorem<a class="anchor" aria-label="anchor" href="#the-normal-distribution-and-the-central-limit-theorem"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Defined by two parameters: the mean and the standard deviation (SD)
+<ul>
+<li>Bell curve is centered at the mean (the value of zero on the x axis)</li>
+<li>67.8% of the data are within 1 SD of the mean</li>
+<li>95% of the data are within 2 SDs of the mean</li>
+<li>99.8% of the data are within 3 SDs of the mean</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="st">"fig5_2.png"</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="fig5_2.png" width="65%"></div>
+<ul>
+<li>We use the normal distribution as a model for our data and assume that our data are approximately normal.
+<ul>
+<li>We will more formally test this by making models and looking at the diagnostics</li>
+</ul>
+</li>
+<li>Side note: using the properties of a normal distribution as a model of variability in a sample works less effectively in small sample sizes</li>
+<li>We are asking, How likely are we to see a difference of 2.62 inches if the null hypothesis is true? How many SEs away from zero is 2.62?</li>
+<li>We will assume that these data are approximately normal so that we can use the normal distribution to model our data on</li>
+</ul>
+<div class="inline-figure">Bell curve to represent the plant height data:
+<img src="fig5_3.png" width="65%">
+</div>
+<ul>
+<li>Figure 5.3
+<ul>
+<li>The center of the bell curve is the mean (2.62 inches)</li>
+<li>The red line, which shows 0, is beyond two standard errors of the mean</li>
+<li>Because 0 lies beyond 2 SEs of the mean, or outside of 95&amp; of the data, we can reject the null hypothesis that there is no difference in height at this level of confidence</li>
+<li>This is the lowest level of confidence for statistical significance</li>
+<li>We fail to reject the null hypothesis at a confidence level of 99% (three SEs) or greater</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="confidence-intervals" class="section level2" number="5.6">
+<h2>
+<span class="header-section-number">5.6</span> Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Two standard errors encompasesses the central 95% of the data under the normal curve
+<ul>
+<li>This is referred to as a 95% confidence interval (CI)</li>
+<li>CIs are defined by their upper and lower limits (bounds)</li>
+<li>They can be calculated in the following ways:</li>
+</ul>
+</li>
+</ul>
+<p>Calculate the lower bound of 95% CI:</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fl">2.62</span> <span class="op">-</span> <span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> <span class="co">#x = 1.22. This is one standard error of the mean. </span>
+<span class="co">#&gt; [1] 0.18</span></code></pre></div>
+<p>Calculate upper bound of the 95% CI:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fl">2.62</span> <span class="op">+</span> <span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">)</span> 
+<span class="co">#&gt; [1] 5.06</span></code></pre></div>
+<ul>
+<li>Conventionally, a 95% CI is calculated with the upper and lower bounds 2 SEs from the mean</li>
+<li>The 95% refers to an imaginary repetition of experiments/samples in which the interval will capture the true value (i.e. an unknown population mean) 95% of the time (in a long term sense)</li>
+<li>Report as mean difference of height of 2.62 [0.18, 5.06] inches (95% CI)</li>
+<li>CI takeaways:
+<ul>
+<li>since 0 is outside the 95% CI bounds, we can reject the null hypothesis at this level</li>
+<li>but it will fail at a 99% CI (3 standard errors from the mean)</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></div>
+<div class="next"><a href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#estimation"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="nav-link" href="#introduction-2"><span class="header-section-number">5.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#quick-tests"><span class="header-section-number">5.2</span> Quick tests</a></li>
+<li><a class="nav-link" href="#differences-between-groups"><span class="header-section-number">5.3</span> Differences between groups</a></li>
+<li><a class="nav-link" href="#standard-deviations-and-standard-errors"><span class="header-section-number">5.4</span> Standard deviations and standard errors</a></li>
+<li><a class="nav-link" href="#the-normal-distribution-and-the-central-limit-theorem"><span class="header-section-number">5.5</span> The normal distribution and the central limit theorem</a></li>
+<li><a class="nav-link" href="#confidence-intervals"><span class="header-section-number">5.6</span> Confidence intervals</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/apicellap/NSwR.git/blob/master/05_estimation.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/apicellap/NSwR.git/edit/master/05_estimation.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Guide to The New Statistics with R</strong>" was written by Pete Apicella. It was last built on 2022-07-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

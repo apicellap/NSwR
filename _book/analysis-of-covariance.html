@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 13 Analysis of Covariance | A Guide to The New Statistics with R</title>
+<meta name="author" content="Pete Apicella">
+<meta name="generator" content="bookdown 0.27 with bs4_book()">
+<meta property="og:title" content="Chapter 13 Analysis of Covariance | A Guide to The New Statistics with R">
+<meta property="og:type" content="book">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 13 Analysis of Covariance | A Guide to The New Statistics with R">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<link rel="stylesheet" href="style.css">
+<meta name="description" content="13.1 Introduction The last analysis dealt with an interaction between two categorical explanatory variables Using ANCOVA, interactions between a categorical and continuous explanatory variables...">
+<meta property="og:description" content="13.1 Introduction The last analysis dealt with an interaction between two categorical explanatory variables Using ANCOVA, interactions between a categorical and continuous explanatory variables...">
+<meta name="twitter:description" content="13.1 Introduction The last analysis dealt with an interaction between two categorical explanatory variables Using ANCOVA, interactions between a categorical and continuous explanatory variables...">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">A Guide to The New Statistics with R</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">About</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="motivation.html"><span class="header-section-number">2</span> Motivation</a></li>
+<li><a class="" href="description.html"><span class="header-section-number">3</span> Description</a></li>
+<li><a class="" href="reproducible-research.html"><span class="header-section-number">4</span> Reproducible Research</a></li>
+<li><a class="" href="estimation.html"><span class="header-section-number">5</span> Estimation</a></li>
+<li><a class="" href="linear-models.html"><span class="header-section-number">6</span> Linear models</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">7</span> Regression</a></li>
+<li><a class="" href="prediction.html"><span class="header-section-number">8</span> Prediction</a></li>
+<li><a class="" href="testing.html"><span class="header-section-number">9</span> Testing</a></li>
+<li><a class="" href="intervals.html"><span class="header-section-number">10</span> Intervals</a></li>
+<li><a class="" href="analysis-of-variance.html"><span class="header-section-number">11</span> Analysis of Variance</a></li>
+<li><a class="" href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></li>
+<li><a class="active" href="analysis-of-covariance.html"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="" href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></li>
+<li><a class="" href="generalized-linear-models-glms.html"><span class="header-section-number">15</span> Generalized Linear Models (GLMs)</a></li>
+<li><a class="" href="glms-for-count-data.html"><span class="header-section-number">16</span> GLMs for Count Data</a></li>
+<li><a class="" href="binomial-glms.html"><span class="header-section-number">17</span> Binomial GLMs</a></li>
+<li><a class="" href="glms-for-binary-data.html"><span class="header-section-number">18</span> GLMs for binary data</a></li>
+<li><a class="" href="conclusions.html"><span class="header-section-number">19</span> Conclusions</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/apicellap/NSwR.git">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="analysis-of-covariance" class="section level1" number="13">
+<h1>
+<span class="header-section-number">13</span> Analysis of Covariance<a class="anchor" aria-label="anchor" href="#analysis-of-covariance"><i class="fas fa-link"></i></a>
+</h1>
+<div id="introduction-7" class="section level2" number="13.1">
+<h2>
+<span class="header-section-number">13.1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction-7"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The last analysis dealt with an interaction between two categorical explanatory variables</li>
+<li>Using ANCOVA, interactions between a categorical and continuous explanatory variables can be examined</li>
+<li>Side note: ‘ANCOVA’ is also used to describe analysis in which there is a need to adjust for effects of uncontrolled variables called covariates</li>
+</ul>
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"arm"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cowplot"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"patchwork"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Sleuth3"</span>,  repos <span class="op">=</span> <span class="st">"https://cran.us.r-project.org"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=arm">arm</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/">cowplot</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-forge.r-project.org/projects/sleuth2/">Sleuth3</a></span><span class="op">)</span></code></pre></div>
+</div>
+<div id="the-agricultural-pollution-data" class="section level2" number="13.2">
+<h2>
+<span class="header-section-number">13.2</span> The agricultural pollution data<a class="anchor" aria-label="anchor" href="#the-agricultural-pollution-data"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>For this section on ANCOVA, we will look at a subset of variables from a study on the effects of low-level atmospheric pollutants and drought on agricultural yields</li>
+<li>The aim of this experiment was to determine how the yields of two types of soya beans called ‘Forrest’ and ‘William’ were affected by two pollutants (low-level ozone <span class="math inline">\(O_3\)</span> and sulfur dioxide <span class="math inline">\(SO_2\)</span>) and also how these pollutants interact with water stress</li>
+<li>We will examine only the effects to the ‘William’ variety</li>
+<li>We will look at the effect of each of the pollutants with water stress in separate ANCOVAs before combining all three variables in one linear model</li>
+</ul>
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">case1402</span><span class="op">)</span>
+<span class="co">#&gt;         Stress  SO2   O3 Forrest William</span>
+<span class="co">#&gt; 1 Well-watered 0.00 0.02    4376    5561</span>
+<span class="co">#&gt; 2 Well-watered 0.00 0.05    4544    5947</span>
+<span class="co">#&gt; 3 Well-watered 0.00 0.07    2806    4273</span>
+<span class="co">#&gt; 4 Well-watered 0.00 0.08    3339    3470</span>
+<span class="co">#&gt; 5 Well-watered 0.00 0.10    3320    3080</span>
+<span class="co">#&gt; 6 Well-watered 0.02 0.02    3747    5092</span></code></pre></div>
+<p>Quartile values:</p>
+<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">case1402</span><span class="op">)</span>
+<span class="co">#&gt;           Stress        SO2                O3       </span>
+<span class="co">#&gt;  Stressed    :15   Min.   :0.00000   Min.   :0.020  </span>
+<span class="co">#&gt;  Well-watered:15   1st Qu.:0.00000   1st Qu.:0.050  </span>
+<span class="co">#&gt;                    Median :0.02000   Median :0.070  </span>
+<span class="co">#&gt;                    Mean   :0.02667   Mean   :0.064  </span>
+<span class="co">#&gt;                    3rd Qu.:0.06000   3rd Qu.:0.080  </span>
+<span class="co">#&gt;                    Max.   :0.06000   Max.   :0.100  </span>
+<span class="co">#&gt;     Forrest        William    </span>
+<span class="co">#&gt;  Min.   :2158   Min.   :2101  </span>
+<span class="co">#&gt;  1st Qu.:3245   1st Qu.:2889  </span>
+<span class="co">#&gt;  Median :3478   Median :3428  </span>
+<span class="co">#&gt;  Mean   :3699   Mean   :3635  </span>
+<span class="co">#&gt;  3rd Qu.:4327   3rd Qu.:4263  </span>
+<span class="co">#&gt;  Max.   :5573   Max.   :5947</span></code></pre></div>
+<p>Structure of the data:</p>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">case1402</span><span class="op">)</span>
+<span class="co">#&gt; 'data.frame':    30 obs. of  5 variables:</span>
+<span class="co">#&gt;  $ Stress : Factor w/ 2 levels "Stressed","Well-watered": 2 2 2 2 2 2 2 2 2 2 ...</span>
+<span class="co">#&gt;  $ SO2    : num  0 0 0 0 0 0.02 0.02 0.02 0.02 0.02 ...</span>
+<span class="co">#&gt;  $ O3     : num  0.02 0.05 0.07 0.08 0.1 0.02 0.05 0.07 0.08 0.1 ...</span>
+<span class="co">#&gt;  $ Forrest: int  4376 4544 2806 3339 3320 3747 4570 4635 3613 3259 ...</span>
+<span class="co">#&gt;  $ William: int  5561 5947 4273 3470 3080 5092 4752 4232 2867 3106 ...</span></code></pre></div>
+<ul>
+<li>Stress is a factor with 2 levels</li>
+<li>SO2 and O3, as treatments, also have levels even though they are read into the dataframe as numeric values:</li>
+</ul>
+<p>Levels of <span class="math inline">\(SO_2\)</span> and <span class="math inline">\(O_3\)</span>:</p>
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">case1402</span><span class="op">$</span><span class="va">SO2</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.00 0.02 0.06</span>
+<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">case1402</span><span class="op">$</span><span class="va">O3</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.02 0.05 0.07 0.08 0.10</span></code></pre></div>
+<ul>
+<li>These could be coerced into factors (using <code><a href="https://rdrr.io/r/base/factor.html">as.factor()</a></code>), but we will maintain their status as numeric values because they form a continuum
+<ul>
+<li>This allows for the examination of them as continuous variables</li>
+</ul>
+</li>
+<li>This dataset has a balanced 2 x 3 x 5 fully factorial design (with respect to water stress x <span class="math inline">\(SO_2\)</span> x <span class="math inline">\(O_3\)</span>)
+<ul>
+<li>By ‘balanced’ it is meant that there are an equal number of replicates for each treatment combination</li>
+<li>It has a completely randomized design in which treatment combinations were randomly positions to one of 30 growth chambers</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="ancova-with-water-stress-and-low-level-ozone" class="section level2" number="13.3">
+<h2>
+<span class="header-section-number">13.3</span> ANCOVA with water stress and low-level ozone<a class="anchor" aria-label="anchor" href="#ancova-with-water-stress-and-low-level-ozone"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>This subsection will focus on <span class="math inline">\(0_3\)</span> and water stress and perform ANCOVA on their impacts on yield of ‘William’ beans</li>
+<li>In this type of experiment soya yields are log transformed, so we will do this here
+<ul>
+<li>However, we must keep this transformation in mind later when interpretting the results</li>
+</ul>
+</li>
+<li>Possible outcomes:
+<ul>
+<li>Both stresses decrease yields</li>
+<li>One plant exposed to drought stress might be more susceptible to pollutant stress (or vice versa) - syngergistic effect</li>
+<li>Obviously there cannot be negative yields, so yields are bounded at 0 - this will impose constraints</li>
+</ul>
+</li>
+</ul>
+<p>Pretty labels:</p>
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">xlabel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Ozone (µL • L"</span> <span class="op">^</span> <span class="st">"-1"</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ylabel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Log Yield (kg • ha"</span> <span class="op">^</span> <span class="st">"-1"</span>, <span class="st">")"</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
+<p>Create base plot of the data:</p>
+<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig13_0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">case1402</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span> <span class="va">O3</span>, 
+                                y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co">#log transform the y values </span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="va">xlabel</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="va">ylabel</span><span class="op">)</span> <span class="op">+</span> 
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span>, <span class="co">#set x axis range </span>
+                    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.1</span>, by <span class="op">=</span> <span class="fl">0.025</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co">#x axis range and increments </span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="va">Stress</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">fig13_0</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-8-1.png" width="672"></div>
+<p>Visualize the data as two regressions:</p>
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig13_1</span> <span class="op">&lt;-</span> <span class="va">fig13_0</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span> <span class="op">+</span> 
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Yield of 'William' soya beans under diverse stress conditions"</span><span class="op">)</span> 
+<span class="va">fig13_1</span>
+<span class="co">#&gt; `geom_smooth()` using formula 'y ~ x'</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-9-1.png" width="672"></div>
+<ul>
+<li>In this figure, the ANCOVA produces two regressions
+<ul>
+<li>There is one regression for each level of water stress factor</li>
+<li>
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code> adds the slopes</li>
+</ul>
+</li>
+<li>Based on this figure,
+<ul>
+<li>I think there is probably an effect of ozone on soya bean yield</li>
+<li>There also could be an effect of drought stress the y intercepts of the lines look fairly similiar
+<ul>
+<li>If anything, my guess would be that the effects are additive but there is no interaction</li>
+</ul>
+</li>
+<li>The author also notes that the regression line in the stressed treatment is slightly flatter than that of the well-watered one</li>
+</ul>
+</li>
+</ul>
+<p>Create model that considers the possibility of an interaction</p>
+<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">w1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span></code></pre></div>
+<ul>
+<li>This model is very similar to the two-way factorial ANOVA in the previous chapter. The only difference is that one of the explanatory variables is continous</li>
+<li>The author skips checking the assumptions
+<ul>
+<li>He says that they are not perfectly normally distributed/equal variances, but there are no major issues</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/display.html">display</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span>
+<span class="co">#&gt; lm(formula = log(William) ~ O3 * Stress, data = case1402)</span>
+<span class="co">#&gt;                       coef.est coef.se</span>
+<span class="co">#&gt; (Intercept)            8.49     0.10  </span>
+<span class="co">#&gt; O3                    -6.47     1.40  </span>
+<span class="co">#&gt; StressWell-watered     0.26     0.14  </span>
+<span class="co">#&gt; O3:StressWell-watered -1.35     1.98  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; n = 30, k = 4</span>
+<span class="co">#&gt; residual sd = 0.15, R-Squared = 0.71</span></code></pre></div>
+<ul>
+<li>This ANCOVA can be thought of as regressions within factor levels
+<ul>
+<li>Therefore the table of coefficients contains four values:
+<ul>
+<li>Two regression intercepts and two regression slopes</li>
+<li>One intercept and slope value for each regression</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The linear model prints one factor level as the “(Intercept)”
+<ul>
+<li>It provides the intercept and slope for one of the regression lines in the first two rows</li>
+<li>Then provides the difference of intercept and slope relative to the other factor for one of the regression lines in the next two rows</li>
+</ul>
+</li>
+<li>Labels (from bottom to top):
+<ul>
+<li>
+<strong>O3:StressWell-watered</strong> - this line addresses the interaction
+<ul>
+<li>Provides the difference in slopes of the two stress levels</li>
+</ul>
+</li>
+<li>
+<strong>StressWell-watered</strong> - this line indicates the effect of the well watered treatment
+<ul>
+<li>Provides the difference in intercepts for the regressions in the two stress levels</li>
+</ul>
+</li>
+<li>
+<strong>03</strong> - ozone</li>
+<li>
+<strong>Intercept</strong> - the stressed level of the stress factor</li>
+</ul>
+</li>
+<li>Using arithmetic, we can solve for the four values for the two intercepts and slopes</li>
+</ul>
+<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#find the y intercept of the well-watered condition regression line </span>
+<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="co">#coefficient of the stressed condition </span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="co">#coefficient of the difference for the well watered condition </span>
+<span class="co">#&gt; (Intercept) </span>
+<span class="co">#&gt;     8.75446</span>
+
+<span class="co">#Find the slope of the well-watered condition regression line </span>
+<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="co">#coefficient for the difference in slope of the well-watered condition </span>
+<span class="co">#&gt;       O3 </span>
+<span class="co">#&gt; -7.81444</span></code></pre></div>
+<ul>
+<li>The coefficent for the difference is slopes in the fourth row, which is for the interactive effect, is -1.35 with a standard error of -1.98
+<ul>
+<li>The estimated difference is smaller than its SE, so the conventional rule of thumb suggests that this does not support the idea of there being an interactive effect</li>
+</ul>
+</li>
+</ul>
+<p>To be more precise, we can look at the confidence intervals to see if the row for the interactive effect contains zero:</p>
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span> <span class="co">#the fourth row encompasses 0</span>
+<span class="co">#&gt;                             2.5 %     97.5 %</span>
+<span class="co">#&gt; (Intercept)            8.28982454  8.6906347</span>
+<span class="co">#&gt; O3                    -9.34777877 -3.5865375</span>
+<span class="co">#&gt; StressWell-watered    -0.01918491  0.5476463</span>
+<span class="co">#&gt; O3:StressWell-watered -5.42109500  2.7265306</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/coefplot.html">coefplot</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-14-1.png" width="672"></div>
+<p>Use the <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> function to formally test for an interaction:</p>
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">w1</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: log(William)</span>
+<span class="co">#&gt;           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; O3         1 1.13812 1.13812 51.9277 1.185e-07 ***</span>
+<span class="co">#&gt; Stress     1 0.23764 0.23764 10.8426  0.002859 ** </span>
+<span class="co">#&gt; O3:Stress  1 0.01013 0.01013  0.4621  0.502639    </span>
+<span class="co">#&gt; Residuals 26 0.56985 0.02192                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>The interactive effect row has a small F value and a p value of 0.50</li>
+</ul>
+<p>The <code><a href="https://rdrr.io/r/stats/add1.html">drop1()</a></code> function can also be used to first assess for an interaction:</p>
+<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/add1.html">drop1</a></span><span class="op">(</span><span class="va">w1</span>, test <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span>
+<span class="co">#&gt; Single term deletions</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model:</span>
+<span class="co">#&gt; log(William) ~ O3 * Stress</span>
+<span class="co">#&gt;           Df Sum of Sq     RSS     AIC F value Pr(&gt;F)</span>
+<span class="co">#&gt; &lt;none&gt;                 0.56985 -110.91               </span>
+<span class="co">#&gt; O3:Stress  1  0.010129 0.57998 -112.38  0.4621 0.5026</span></code></pre></div>
+</div>
+<div id="interactions-in-ancova" class="section level2" number="13.4">
+<h2>
+<span class="header-section-number">13.4</span> Interactions in ANCOVA<a class="anchor" aria-label="anchor" href="#interactions-in-ancova"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>Now that we have established that there is no interaction, we can do one of two things:
+<ul>
+<li>Keep the model as it is and move on to interpret the main effects of ozone and stress</li>
+<li>Or take a model simplification approach to remove the unimportant variables to attain a ‘minimal adequate model’ that only has terms in which it supports</li>
+</ul>
+</li>
+<li>There is no definitive answer, but the author moves on with model simplification</li>
+<li>This produces a model that only has terms for the main effects of drought stress and ozone</li>
+<li>Now the questions are:
+<ul>
+<li>Is there a relationship (slope) with ozone?</li>
+<li>Is there a common relationship or do we need two lines with different slopes for the two water stress treatments?</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">w2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/arm/man/display.html">display</a></span><span class="op">(</span><span class="va">w2</span><span class="op">)</span>
+<span class="co">#&gt; lm(formula = log(William) ~ O3 + Stress, data = case1402)</span>
+<span class="co">#&gt;                    coef.est coef.se</span>
+<span class="co">#&gt; (Intercept)         8.53     0.07  </span>
+<span class="co">#&gt; O3                 -7.14     0.98  </span>
+<span class="co">#&gt; StressWell-watered  0.18     0.05  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; n = 30, k = 3</span>
+<span class="co">#&gt; residual sd = 0.15, R-Squared = 0.70</span></code></pre></div>
+<ul>
+<li>With a cursory look at ozone (<span class="math inline">\(-7.14 \pm 0.98\)</span>) and the difference in intercepts (<span class="math inline">\(0.18 \pm 0.05\)</span>) shows that we can be confident in both effects</li>
+</ul>
+<p>Neither CI of either the ozone or the stress factor contains 0:</p>
+<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">w2</span><span class="op">)</span>
+<span class="co">#&gt;                          2.5 %     97.5 %</span>
+<span class="co">#&gt; (Intercept)         8.38292735  8.6837580</span>
+<span class="co">#&gt; O3                 -9.15368606 -5.1279124</span>
+<span class="co">#&gt; StressWell-watered  0.06819616  0.2878131</span></code></pre></div>
+<ul>
+<li>We can reject the null hypothesis that they do not have an effect on yield</li>
+</ul>
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/coefplot.html">coefplot</a></span><span class="op">(</span><span class="va">w2</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-19-1.png" width="672"></div>
+</div>
+<div id="general-linear-models-three-way" class="section level2" number="13.5">
+<h2>
+<span class="header-section-number">13.5</span> General linear models (Three-way)<a class="anchor" aria-label="anchor" href="#general-linear-models-three-way"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>The author ends this chapter by positing that we can take this ANCOVA analysis a step further by creating a GLM that analysis water stress, ozone, and sulfur dioxide in combination</li>
+<li>This design allows for us to include and look at a three way interaction, but we might not want to do this unless we have an <em>a priori</em> question that motivates the inclusion of this third term</li>
+<li>With more complex designs that involve more terms, the results can be uninterpretable</li>
+<li>In this situation, we don’t have an <em>a priori</em> hypothesis it is reasonable that all three stresses could interact to reduce yield synergistically</li>
+</ul>
+<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">*</span> <span class="va">SO2</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = log(William) ~ O3 * SO2 * Stress, data = case1402)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
+<span class="co">#&gt; -0.222274 -0.067130  0.007202  0.054343  0.213667 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                           Estimate Std. Error t value</span>
+<span class="co">#&gt; (Intercept)                 8.5184     0.1111  76.703</span>
+<span class="co">#&gt; O3                         -5.4844     1.5963  -3.436</span>
+<span class="co">#&gt; SO2                        -1.0567     3.0414  -0.347</span>
+<span class="co">#&gt; StressWell-watered          0.3605     0.1571   2.295</span>
+<span class="co">#&gt; O3:SO2                    -36.8530    43.7175  -0.843</span>
+<span class="co">#&gt; O3:StressWell-watered      -2.5543     2.2576  -1.131</span>
+<span class="co">#&gt; SO2:StressWell-watered     -3.6102     4.3012  -0.839</span>
+<span class="co">#&gt; O3:SO2:StressWell-watered  45.2629    61.8259   0.732</span>
+<span class="co">#&gt;                           Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)                &lt; 2e-16 ***</span>
+<span class="co">#&gt; O3                         0.00236 ** </span>
+<span class="co">#&gt; SO2                        0.73158    </span>
+<span class="co">#&gt; StressWell-watered         0.03162 *  </span>
+<span class="co">#&gt; O3:SO2                     0.40831    </span>
+<span class="co">#&gt; O3:StressWell-watered      0.27005    </span>
+<span class="co">#&gt; SO2:StressWell-watered     0.41030    </span>
+<span class="co">#&gt; O3:SO2:StressWell-watered  0.47183    </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 0.1152 on 22 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.8507, Adjusted R-squared:  0.8032 </span>
+<span class="co">#&gt; F-statistic: 17.91 on 7 and 22 DF,  p-value: 9.896e-08</span></code></pre></div>
+<ul>
+<li>This ANOVA table provides even greater support that there are no interactions, and it tests the dual interactions too</li>
+</ul>
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">*</span> <span class="va">SO2</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;                                   2.5 %      97.5 %</span>
+<span class="co">#&gt; (Intercept)                  8.28808808   8.7487263</span>
+<span class="co">#&gt; O3                          -8.79501554  -2.1738073</span>
+<span class="co">#&gt; SO2                         -7.36420566   5.2508903</span>
+<span class="co">#&gt; StressWell-watered           0.03478276   0.6862235</span>
+<span class="co">#&gt; O3:SO2                    -127.51762948  53.8116264</span>
+<span class="co">#&gt; O3:StressWell-watered       -7.23619363   2.1276089</span>
+<span class="co">#&gt; SO2:StressWell-watered     -12.53043691   5.3100030</span>
+<span class="co">#&gt; O3:SO2:StressWell-watered  -82.95626522 173.4820277</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/coefplot.html">coefplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">*</span> <span class="va">SO2</span> <span class="op">*</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-22-1.png" width="672"></div>
+<p>Simplify the model to eliminate the analysis of interactions:</p>
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/display.html">display</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">+</span> <span class="va">SO2</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; lm(formula = log(William) ~ O3 + SO2 + Stress, data = case1402)</span>
+<span class="co">#&gt;                    coef.est coef.se</span>
+<span class="co">#&gt; (Intercept)         8.63     0.06  </span>
+<span class="co">#&gt; O3                 -7.14     0.74  </span>
+<span class="co">#&gt; SO2                -3.77     0.80  </span>
+<span class="co">#&gt; StressWell-watered  0.18     0.04  </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; n = 30, k = 4</span>
+<span class="co">#&gt; residual sd = 0.11, R-Squared = 0.84</span></code></pre></div>
+<ul>
+<li>This table of coefficients shows that the the S)2 coefficient estimate is -4.7x larger than its standard error</li>
+</ul>
+<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/arm/man/coefplot.html">coefplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">+</span> <span class="va">SO2</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="inline-figure"><img src="013_ancova_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;"></div>
+<p>Look at the F and p values through the anova table for the SO2 term:</p>
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">William</span><span class="op">)</span> <span class="op">~</span> <span class="va">O3</span> <span class="op">+</span> <span class="va">SO2</span> <span class="op">+</span> <span class="va">Stress</span>, data <span class="op">=</span> <span class="va">case1402</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Analysis of Variance Table</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Response: log(William)</span>
+<span class="co">#&gt;           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    </span>
+<span class="co">#&gt; O3         1 1.13812 1.13812  94.119 3.969e-10 ***</span>
+<span class="co">#&gt; SO2        1 0.26558 0.26558  21.963 7.690e-05 ***</span>
+<span class="co">#&gt; Stress     1 0.23764 0.23764  19.652 0.0001501 ***</span>
+<span class="co">#&gt; Residuals 26 0.31440 0.01209                      </span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  </span>
+<span class="co">#&gt; 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></code></pre></div>
+<ul>
+<li>ANCOVAs and a three-way general linear model all support clear negative effects of water stress, ozone, and sulfure dioxide on soya bean yield for the ‘William’ variety</li>
+</ul>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="factorial-designs.html"><span class="header-section-number">12</span> Factorial designs</a></div>
+<div class="next"><a href="linear-model-complexities.html"><span class="header-section-number">14</span> Linear Model Complexities</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#analysis-of-covariance"><span class="header-section-number">13</span> Analysis of Covariance</a></li>
+<li><a class="nav-link" href="#introduction-7"><span class="header-section-number">13.1</span> Introduction</a></li>
+<li><a class="nav-link" href="#the-agricultural-pollution-data"><span class="header-section-number">13.2</span> The agricultural pollution data</a></li>
+<li><a class="nav-link" href="#ancova-with-water-stress-and-low-level-ozone"><span class="header-section-number">13.3</span> ANCOVA with water stress and low-level ozone</a></li>
+<li><a class="nav-link" href="#interactions-in-ancova"><span class="header-section-number">13.4</span> Interactions in ANCOVA</a></li>
+<li><a class="nav-link" href="#general-linear-models-three-way"><span class="header-section-number">13.5</span> General linear models (Three-way)</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/apicellap/NSwR.git/blob/master/013_ancova.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/apicellap/NSwR.git/edit/master/013_ancova.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>A Guide to The New Statistics with R</strong>" was written by Pete Apicella. It was last built on 2022-07-19.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>
