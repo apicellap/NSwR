@@ -1,0 +1,234 @@
+# Analysis of Covariance
+
+## Introduction
+- The last analysis dealt with an interaction between two categorical explanatory variables 
+- Using ANCOVA, interactions between a categorical and continuous explanatory variables can be examined 
+- Side note: 'ANCOVA' is also used to describe analysis in which there is a need to adjust for effects of uncontrolled variables called covariates 
+
+```{r echo=T, message=FALSE, warning=FALSE, results='hide'}
+install.packages("arm",  repos = "https://cran.us.r-project.org")
+install.packages("ggplot2",  repos = "https://cran.us.r-project.org")
+install.packages("cowplot",  repos = "https://cran.us.r-project.org")
+install.packages("patchwork",  repos = "https://cran.us.r-project.org")
+install.packages("dplyr",  repos = "https://cran.us.r-project.org")
+install.packages("Sleuth3",  repos = "https://cran.us.r-project.org")
+```
+
+```{r echo=T, message=FALSE, warning=FALSE, results='hide'}
+library(arm)
+library(ggplot2)
+library(cowplot)
+library(dplyr)
+library(patchwork)
+library(Sleuth3)
+```
+
+
+## The agricultural pollution data 
+- For this section on ANCOVA, we will look at a subset of variables from a study on the effects of low-level atmospheric pollutants and drought on agricultural yields 
+- The aim of this experiment was to determine how the yields of two types of soya beans called 'Forrest' and 'William' were affected by two pollutants (low-level ozone $O_3$ and sulfur dioxide $SO_2$) and also how these pollutants interact with water stress 
+- We will examine only the effects to the 'William' variety 
+- We will look at the effect of each of the pollutants with water stress in separate ANCOVAs before combining all three variables in one linear model 
+
+```{r}
+head(case1402)
+```
+Quartile values: 
+```{r}
+summary(case1402)
+```
+
+Structure of the data: 
+```{r}
+str(case1402)
+```
+- Stress is a factor with 2 levels 
+- SO2 and O3, as treatments, also have levels even though they are read into the dataframe as numeric values:
+
+Levels of $SO_2$ and $O_3$: 
+```{r}
+unique(case1402$SO2)
+unique(case1402$O3)
+```
+
+- These could be coerced into factors (using `as.factor()`), but we will maintain their status as numeric values because they form a continuum
+  - This allows for the examination of them as continuous variables 
+- This dataset has a balanced 2 x 3 x 5 fully factorial design (with respect to water stress x $SO_2$ x $O_3$)
+  - By 'balanced' it is meant that there are an equal number of replicates for each treatment combination 
+  - It has a completely randomized design in which treatment combinations were randomly positions to one of 30 growth chambers 
+
+## ANCOVA with water stress and low-level ozone 
+- This subsection will focus on $0_3$ and water stress and perform ANCOVA on their impacts on yield of 'William' beans 
+- In this type of experiment soya yields are log transformed, so we will do this here
+  - However, we must keep this transformation in mind later when interpretting the results 
+- Possible outcomes: 
+  - Both stresses decrease yields 
+  - One plant exposed to drought stress might be more susceptible to pollutant stress (or vice versa) - syngergistic effect 
+  - Obviously there cannot be negative yields, so yields are bounded at 0 - this will impose constraints 
+  
+Pretty labels: 
+```{r}
+xlabel <- expression(paste("Ozone (µL • L" ^ "-1", ")"))
+ylabel <- expression(paste("Log Yield (kg • ha" ^ "-1", ")")) 
+```
+
+Create base plot of the data: 
+```{r}
+fig13_0 <- ggplot(case1402, aes(x= O3, 
+                                y = log(William))) + #log transform the y values 
+  geom_point() + 
+  xlab(xlabel) + ylab(ylabel) + 
+scale_x_continuous(limits = c(0, 0.1), #set x axis range 
+                    breaks = seq(0,0.1, by = 0.025)) +  #x axis range and increments 
+  facet_wrap(vars(Stress)) + theme_bw()
+fig13_0
+```
+
+Visualize the data as two regressions: 
+```{r}
+fig13_1 <- fig13_0 + geom_smooth(method = "lm") + 
+ggtitle("Yield of 'William' soya beans under diverse stress conditions") 
+fig13_1
+```
+
+- In this figure, the ANCOVA produces two regressions 
+  - There is one regression for each level of water stress factor 
+  - `geom_smooth()` adds the slopes 
+- Based on this figure, 
+  - I think there is probably an effect of ozone on soya bean yield 
+  - There also could be an effect of drought stress the y intercepts of the lines look fairly similiar 
+    - If anything, my guess would be that the effects are additive but there is no interaction 
+  - The author also notes that the regression line in the stressed treatment is slightly flatter than that of the well-watered one 
+
+
+Create model that considers the possibility of an interaction
+```{r}
+w1 <- lm(log(William) ~ O3 * Stress, data = case1402)
+```
+
+- This model is very similar to the two-way factorial ANOVA in the previous chapter. The only difference is that one of the explanatory variables is continous 
+- The author skips checking the assumptions
+  - He says that they are not perfectly normally distributed/equal variances, but there are no major issues 
+
+```{r}
+display(w1)
+```
+
+- This ANCOVA can be thought of as regressions within factor levels 
+  - Therefore the table of coefficients contains four values: 
+    - Two regression intercepts and two regression slopes 
+    - One intercept and slope value for each regression 
+- The linear model prints one factor level as the "(Intercept)"
+  - It provides the intercept and slope for one of the regression lines in the first two rows
+  - Then provides the difference of intercept and slope relative to the other factor for one of the regression lines in the next two rows
+- Labels (from bottom to top): 
+  - **O3:StressWell-watered** - this line addresses the interaction 
+    - Provides the difference in slopes of the two stress levels 
+  - **StressWell-watered**  - this line indicates the effect of the well watered treatment 
+    - Provides the difference in intercepts for the regressions in the two stress levels 
+  - **03** - ozone 
+  - **Intercept** - the stressed level of the stress factor 
+- Using arithmetic, we can solve for the four values for the two intercepts and slopes 
+```{r}
+#find the y intercept of the well-watered condition regression line 
+coef(w1)[1] + #coefficient of the stressed condition 
+  coef(w1)[3] #coefficient of the difference for the well watered condition 
+
+#Find the slope of the well-watered condition regression line 
+coef(w1)[2] +
+  coef(w1)[4] #coefficient for the difference in slope of the well-watered condition 
+```
+
+- The coefficent for the difference is slopes in the fourth row, which is for the interactive effect, is -1.35 with a standard error of -1.98 
+  - The estimated difference is smaller than its SE, so the conventional rule of thumb suggests that this does not support the idea of there being an interactive effect 
+
+To be more precise, we can look  at the confidence intervals to see if the row for the interactive effect contains zero: 
+```{r}
+confint(w1) #the fourth row encompasses 0
+```
+
+```{r}
+coefplot(w1)
+```
+
+
+Use the `anova()` function to formally test for an interaction: 
+```{r}
+anova(w1)
+```
+- The interactive effect row has a small F value and a p value of 0.50 
+
+The `drop1()` function can also be used to first assess for an interaction: 
+```{r}
+drop1(w1, test = "F")
+```
+
+## Interactions in ANCOVA 
+- Now that we have established that there is no interaction, we can do one of two things:
+  - Keep the model as it is and move on to interpret the main effects of ozone and stress 
+  - Or take a model simplification approach to remove the unimportant variables to attain a 'minimal adequate model' that only has terms in which it supports 
+- There is no definitive answer, but the author moves on with model simplification 
+- This produces a model that only has terms for the main effects of drought stress and ozone 
+- Now the questions are: 
+  - Is there a relationship (slope) with ozone? 
+  - Is there a common relationship or do we need two lines with different slopes for the two water stress treatments? 
+```{r}
+w2 <- lm(log(William) ~ O3 + Stress, data = case1402)
+display(w2)
+```
+- With a cursory look at ozone ($-7.14 \pm 0.98$) and the difference in intercepts ($0.18 \pm 0.05$) shows that we can be confident in both effects
+
+Neither CI of either the ozone or the stress factor contains 0: 
+```{r}
+confint(w2)
+```
+- We can reject the null hypothesis that they do not have an effect on yield 
+
+```{r}
+coefplot(w2)
+```
+
+
+## General linear models (Three-way)
+- The author ends this chapter by positing that we can take this ANCOVA analysis a step further by creating a GLM that analysis water stress, ozone, and sulfur dioxide in combination 
+- This design allows for us to include and look at a three way interaction, but we might not want to do this unless we have an *a priori* question that motivates the inclusion of this third term 
+- With more complex designs that involve more terms, the results can be uninterpretable 
+- In this situation, we don't have an *a priori* hypothesis it is reasonable that all three stresses could interact to reduce yield synergistically 
+
+```{r}
+summary(lm(log(William) ~ O3 * SO2 * Stress, data = case1402))
+```
+
+- This ANOVA table provides even greater support that there are no interactions, and it tests the dual interactions too
+
+```{r}
+confint(lm(log(William) ~ O3 * SO2 * Stress, data = case1402))
+```
+
+
+```{r}
+coefplot(lm(log(William) ~ O3 * SO2 * Stress, data = case1402))
+```
+
+
+Simplify the model to eliminate the analysis of interactions: 
+```{r}
+display(lm(log(William) ~ O3 + SO2 + Stress, data = case1402))
+```
+
+- This table of coefficients shows that the the S)2 coefficient estimate is -4.7x larger than its standard error 
+
+
+```{r  fig.align = "center"}
+coefplot(lm(log(William) ~ O3 + SO2 + Stress, data = case1402))
+```
+
+
+Look at the F and p values through the anova table for the SO2 term: 
+```{r}
+anova(lm(log(William) ~ O3 + SO2 + Stress, data = case1402))
+```
+
+- ANCOVAs and a three-way general linear model all support clear negative effects of water stress, ozone, and sulfure dioxide on soya bean yield for the 'William' variety 
+
+

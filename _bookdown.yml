@@ -1,0 +1,27 @@
+book_filename: "NSwR_book-deploy"
+new_session: true
+before_chapter_script: _common.R
+delete_merged_file: true
+rmd_files: ["index.Rmd", 
+"01_introduction.Rmd",
+"02_motivation.Rmd", 
+"03_description.Rmd", 
+"04_rep-research.Rmd",
+"05_estimation.Rmd",
+"06_linear-models.Rmd",
+"07_regression.Rmd",
+"08_prediction.Rmd",
+"09_testing.Rmd",
+"010_intervals.Rmd",
+"011_ANOVA.Rmd",
+"012_factorial-designs.Rmd",
+"013_ancova.Rmd",
+"014_lm-complexities.Rmd",
+"015_GLMs.Rmd",
+"016_count-data.Rmd",
+"017_binomial-glms.Rmd",
+"018_glms-binary-data.Rmd",
+"019_conclusion.Rmd"]
+language:
+  ui:
+    chapter_name: "Chapter "

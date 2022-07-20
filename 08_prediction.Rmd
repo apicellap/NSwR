@@ -1,0 +1,183 @@
+# Prediction
+
+## Introduction 
+- In the previous section, a linear regression tot model the relationship between wood density and timber hardness was established 
+- The coefficients of the linear model - the regression intercept and the slop - were found 
+- In this section, the coefficients will be used to predict timber hardness from new density values 
+
+```{r install-08, echo=T, message=FALSE, warning=FALSE, results='hide'}
+install.packages("ggplot2",  repos = "https://cran.us.r-project.org")
+install.packages("dplyr",  repos = "https://cran.us.r-project.org")
+install.packages("SemiPar",  repos = "https://cran.us.r-project.org")
+```
+
+```{r load-libs-08, echo=T, message=FALSE, warning=FALSE, results='hide'}
+library(ggplot2)
+library(dplyr)
+library(SemiPar)
+```
+
+## Predicting timber hardness from wood density 
+
+- Predicting wood hardness from a known density value
+- Rather than using $y = mx + b$ to solve for y, we can use tools in R 
+- The model that was created in the last section has data that encompasses density values of between 20-70 lbs/$ft^3$ and correspondingly, up to about 3000 units on the janka timber hardness scale
+
+Reload janka data: 
+```{r load-janka-08, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+data(janka)
+janka.ls1 <- lm(hardness ~ dens, data = janka)
+```
+
+The estimates of the intercept and slope are: 
+```{r janka-coef-08}
+coef(janka.ls1)
+```
+
+
+To find timber hardness for a density value of 65: 
+```{r onepred-08}
+coef(janka.ls1)[1] + coef(janka.ls1)[2] *65 #b + mx = timber hardness value 
+```
+- numbers in brackets refer to which coefficent 
+  - 1 refers to the intercept
+  - 2 refers to the slope 
+  
+We can accomplish the same thing with the predict function: 
+```{r predfunc-08}
+predict(object = janka.ls1, #the model used to make the prediction 
+        newdata = list(dens=65)) #the value(s) we want to make the prediction for 
+```
+
+By default, a prediction is made for all 36 density values: 
+```{r pred36vals-08}
+predict(object = janka.ls1)
+```
+- These are the fitted values (predictions) we saw last chapter - the data points on the regression line
+  - The density (x) values are fed into the model (the $y = b + mx$ equation model) and the output is the fitted or predicted values 
+- R calculates the fitted values by combining the estimates of the coefficents with the model matrix (X-matrix)
+
+Take a look at the model matrix:
+```{r matrix-08}
+head(model.matrix(janka.ls1))
+tail(model.matrix(janka.ls1))
+```
+
+- (Intercept), here, refers to the other (response) variable, in this case, hardness 
+  - just like we have seen with display(janka.ls1)
+  - the column of 1s include the value that we rarely see in model formulas: 
+  
+  The model formula for janka.ls1 written above can also be written as: 
+```{r model-inspect-08}
+janka.ls1 <- lm(formula = 1 + #shows that 1 is factored into the model as a starting point for the model calculation 
+                  hardness ~ dens, data = janka)
+```
+- as in: 
+  - $y = b\cdot1 + m\cdot x$
+    - here, the intercept, b, is multiplied by 1
+
+To calculate the predicted hardness for a wood sample with the lowest density, we take the estimated values of intercept and slope: 
+```{r janka-coefs-08}
+coef(janka.ls1)
+```
+
+and combine them with values from the first row of the model matrix: 
+```{r}
+model.matrix(janka.ls1)[1,]
+```
+
+like so: 
+```{r}
+-1160.49970*1 +57.50667*24.7
+```
+- this translates to $b\cdot1 + m\cdot x = 259.915$ in which: 
+  - $b$ = -1160.49970 
+  - $m$ = 57.50667
+  - $x$ = 24.7
+  
+R figures this out more easily (and precisely without rounding error): 
+```{r modinspec-pred-08}
+coef(janka.ls1)[1] * model.matrix(janka.ls1)[1,1] +
+coef(janka.ls1)[2] * model.matrix(janka.ls1)[1,2]
+```
+
+## Confidence intervals and prediction intervals 
+
+It's easy to plot data with a regression line plus a 95% CI: 
+```{r regline-CI-08}
+Fig8_1 <- ggplot(janka, aes(x=dens, y = hardness)) + geom_point() +
+  geom_smooth(method = "lm")
+Fig8_1
+```
+
+- Remember that the 95% CI reflects our confidence in the average relationship - the regression line itself (conveys the inferential uncertainty)
+- Now we want to use this relationship to predict new y values (hardness) of new wood samples based on their x values (density)
+- We need to accompany our prediction with an interval that shows our confidence in it 
+  - The 95% CI does not achieve this 
+- Instead, we use the a prediction interval (PI), which conveys inferential uncertainty because it shows our confidence in our estimate of the regression relationship 
+- There is scatter around the regression line so there is inherently some uncertainty with the prediction of new y values based on corresponding x values (predictive uncertainty)
+- PI is quantified through residual variance (the residual or error mean square)
+- The `predict()` functiton will provide the SE, the upper/lower bounds of the confidence interval, OR the upper and lower bounds of the prediction interval (PI) (95% PI is the default)
+
+Calculate the point estimate based on an x (density) value: 
+```{r preddens65-08}
+predict(janka.ls1, newdata = list(dens=65),
+        se = TRUE) #display standard error 
+```
+
+Now the same point estimate with a 95% CI: 
+```{r preddens-CI-08}
+predict(janka.ls1, newdata = list(dens=65), interval = "confidence") 
+
+```
+
+Finally, the prediction of hardness based on the same density value with a 95% prediction interval:
+```{r predict-PI-08}
+predict(janka.ls1, newdata = list(dens=65), interval = "predict")
+
+```
+
+- The process of generating predicted values and their corresponding PIs can be extended to a range of x values 
+- But we only have 36 density values and they are not evenly spread 
+- We need to generate a longer, regular sequence of x values (i.e. 100 equally spaced values) to get a smooth interval 
+
+Create the sequence: 
+```{r xseq100-08}
+xseq <- seq(from = min(janka$dens), 
+            to = max(janka$dens), 
+            length.out = 100) #number of values between the min and max parameters 
+```
+
+Use the newly generated sequence to create a dataframe of all of the new predicted values and their respective PIs: 
+```{r PIcreate-08}
+prediction_interval <- 
+predict(janka.ls1, newdata = list(dens = xseq), interval = "predict")
+head(prediction_interval)
+
+```
+
+Add the x values to the dataframe: 
+```{r figdata-08}
+fig_data <- data.frame(xseq, prediction_interval)
+head(fig_data)
+```
+
+- this allows us to plot the values on an x and y plot 
+
+Rename the dataframe variable names to more familiar ones: 
+```{r dplyr-rename-08}
+fig_data <- rename(fig_data, dens = xseq, hardness = fit)
+head(fig_data)
+
+```
+
+Redraw the figure with the CI (in blue) and the PI (in grey): 
+```{r dataviz-08}
+Fig8_2 <- ggplot(janka, aes(x = dens, y =hardness)) + geom_point() + 
+  geom_smooth(data = janka, method = "lm", fill = "blue") + 
+  geom_smooth(data = fig_data, aes(ymin = lwr, ymax = upr), stat = "identity")
+Fig8_2
+```
+
+- major takeaway: the PI is much wider than the CI
+  - but more datapoints would make both more narrow 

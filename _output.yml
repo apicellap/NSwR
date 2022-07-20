@@ -1,0 +1,23 @@
+bookdown::bs4_book:
+  css: style.css
+  theme:
+    primary: "#12211D"
+  repo: https://github.com/apicellap/NSwR.git
+bookdown::gitbook:
+  fig_caption: yes
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">NSwR Guide</a></li>
+      after: |
+        <li><a href="https://github.com/apicellap/NSwR.git" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/apicellap/NSwR.git
+    download: ["pdf", "epub"]
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+  keep_tex: yes
+bookdown::epub_book: default

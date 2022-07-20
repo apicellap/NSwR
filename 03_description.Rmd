@@ -1,0 +1,168 @@
+# Description
+
+## Introduction 
+- Author starts the chapter by introducing linear-model analysis in which the goal is to compare the effects of different treatments 
+  - Each treatment is applied to a group of experimental units (biological replicates) 
+  - If the treatments produce a change in the replicates, then there will be a quantifiable difference between groups 
+- This chapter focuses on treatment effects and hypohthesis *testing* is saved for later 
+
+```{r installation-03, echo=T, include=FALSE, message=FALSE, warning=FALSE, results='hide'}
+install.packages("ggplot2",repos = "https://cran.us.r-project.org")
+install.packages("Sleuth3",repos = "https://cran.us.r-project.org")
+install.packages("SMPracticals",repos = "https://cran.us.r-project.org")
+```
+
+```{r load-libs-03, include=FALSE, echo=T, message=FALSE, warning=FALSE, results='hide'}
+library(ggplot2)
+library(Sleuth3)
+library(SMPracticals)
+```
+
+## Darwin's maize pollination data 
+- Darwin's book *The Effects of Cross and Self-Fertilization in the Vegetable Kingdom* (1876) describes he produced maize seeds by pollinating the flowers of the parent from the same individual or with pollen from another plant 
+- Pairs of seeds taken from selfed or out-crossed plants were then grown in pots 
+- The height of the young seedlings was recorded as a measure for fitness 
+- Darwin wanted to know whether inbreeding reduced fitness of the selfed plants 
+- Darwin's data is in the package 'SMPracticals' 
+- The dataframe that contains the data is 'darwin' 
+- R terminology 
+  - single values = scalars
+  - columns of numerical data = vectors
+
+```{r head-darwin-03}
+head(darwin)
+```
+
+### Known your data 
+
+Understand structure of the dataframe: 
+```{r darwin-str-03}
+str(darwin)
+```
+
+- Structure: 
+  - The first three variables are Factors 
+    - These are categorical varaibles that divide data into discrete groups called levels 
+  - The last variable is a numerical one. It is a continuous measure of heigth 
+
+Generate summary statistics for the dataframe: 
+```{r darwin-summary-03}
+summary(darwin)
+```
+
+### Summarizing and describing data
+- Plant height is the response variable 
+- The treatments involved are two types of hand-pollination (selfing and crossing). This is the explanatory variable 
+- The goal is to see if we can explain the differences in plant height as a function of pollination treatment 
+- There are 15 replicates in each treatment group, planted in pairs 
+- This dataframe is in the long or tidy format, which is typically ideal
+- Darwin data in the wide format can be found in the package, Sleuth3, and specifcally in the dataframe, exo0428 
+
+```{r exo428-head-03}
+head(ex0428)
+```
+
+Visualize the data in a boxplot:
+```{r}
+fig3_1 <- ggplot(darwin, aes(x=type, y=height)) + geom_boxplot() + 
+  ylab("height (in)") + theme_bw() + scale_y_continuous(limits = c(0,25),  breaks=c(0,5,10,15,20,25))
+fig3_1
+```
+
+- Figure takeaways: 
+  - Bold central horizontal line is the median
+  - Top horizontal part of box is the third quartile
+  - Bottom horizontal part of the box is the first quartile
+    - These contain the middle of the data 
+  - The whiskers contain 95% of the data 
+  - The datapoints are outliers 
+  
+Violin plot can show the higher and lower 'centers of gravity' of the distributions of the data: 
+```{r darwin-base-vp-03}
+fig3_2 <- ggplot(darwin, aes(x=type, y=height)) +
+  geom_violin() + 
+  ylab("height (in)") + theme_bw() + scale_y_continuous(limits = c(0,25),  breaks=c(0,5,10,15,20,25)) + geom_jitter()
+fig3_2
+```
+
+- The author sums up the goal of the analysis by quoting a statistician, Nate Silver, who says that the aim is to find if there is any systematic pattern (signal) in the data that stands out above the background variability (noise)
+  - Signal is often quantified through finding the average (also median and mode)
+
+Determine the mean for all data (ignoring treatment groups): 
+```{r totmean-03}
+with(data = darwin, mean(height)) #average height for all 30 plants 
+```
+
+- Now the problem is how to quantify variability. 
+- Variance is quantified through a process called 'least squares', more on this later
+- Variance is also known as mean squares and is referred to as 
+  - $S^{2}$ when a sample of data is being discussed (as here) and 
+  - $\sigma$$^{2}$ (sigma) when the population from which the sample is drawn is being discussed
+  
+Calculate the variance in the data as a whole: 
+```{r variance-03}
+var(darwin$height) 
+
+```
+
+- The catch about this estimate of variability is not on the same scale as our data 
+- This is on a squared scale, where as the data at hand is unsquared 
+- This means that the measure of signal (plant height) is in inches and the varibility of the plant height is in squared inches, which doesn't make sense 
+- So you have to take the square root of variance to get back to the same scale as the original data 
+  - Effectively, this means that you have to find the standard devation (SD): 
+<center>
+$SD = \sqrt{s^2}$
+</center>
+
+- Again, $\sigma$ is used when referring to the whole population standard deviation
+- The latin $s$ is used for the sample SD
+- SD is the average difference between an individual measurement (i.e. a single plant height measurement) and the mean value
+
+Calculate the SD in R: 
+```{r sd-03}
+a <- sd(darwin$height)
+a
+```
+
+Double check derivation of SD: 
+```{r SD-derive-03}
+b = sd(darwin$height)
+isTRUE(a==b)
+```
+
+### Comparing groups
+
+Calculate means of groups (this approach does not scale well): 
+```{r mean-calc-03}
+mean(ex0428$Cross)
+mean(ex0428$Self)
+```
+
+Calculate summary statistics more efficiently:
+```{r sumstats-calc-03}
+with(data = darwin, tapply(height, type, mean))
+with(data = darwin, tapply(height, type, sd))
+
+```
+
+Assign calculated values to objects:
+```{r val-objs-03}
+means <- tapply(darwin$height, darwin$type,mean)
+sds <- tapply(darwin$height, darwin$type,sd)
+```
+
+Create a new column to contain text to soon merge into the dataframe: 
+```{r sumstat-df-03}
+pollination <- c("Crossed","Selfed")
+dar_sum_stats <- data.frame(pollination, means, sds) 
+dar_sum_stats
+```
+
+Plot these summary statistics: 
+```{r sum-stat-plot-03}
+fig3_3 <- ggplot(dar_sum_stats, aes(x=pollination, y=means)) +
+  geom_pointrange(aes(ymin = means - sds, max = means + sds)) + 
+  ylab("height (in)") + theme_bw() 
+fig3_3
+```
+

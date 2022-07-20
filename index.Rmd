@@ -1,0 +1,27 @@
+--- 
+title: "A Guide to The New Statistics with R"
+author: "Pete Apicella"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+---
+
+# About {-}
+
+This resource encompasses my compiled notes on Dr. Andy Hector's text, *The New Statistics with R: An Introduction for Biologists* Second edition. Throughout the book he emphasizes the use of Rmarkdown for reproducible research. I take this recommendation a step further by taking all R-related notes in Rmarkdown documents. Nearly every section header corresponds to Dr. Hector's chapter headings. These notes are not meant to replace the textbook. Instead they may act as a helpful guide written by someone who is a student of biostatistics. 
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+```{r}
+sessionInfo()
+```
+

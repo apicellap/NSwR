@@ -1,0 +1,43 @@
+# Reproducible Research 
+
+## The reproducibility crisis
+- A concerning amount of research studies have been discovered over the last decade to not be reproducible 
+- One aim of this chapter is to demonstrate how to write a script and then convert it into an Rmarkdown document 
+
+```{r installation-04, echo=T, include=FALSE, message=FALSE, warning=FALSE, results='hide'}
+install.packages("ggplot2",repos = "https://cran.us.r-project.org")
+install.packages("SMPracticals",repos = "https://cran.us.r-project.org")
+```
+
+```{r load-libs-04, include=FALSE, echo=T, message=FALSE, warning=FALSE, results='hide'}
+library(ggplot2)
+library(SMPracticals)
+```
+
+## R Scripts 
+
+Summary statistics on dataframe about atmospheric carbon dioxide concentrations: 
+```{r summstats-04}
+summary(co2)
+```
+
+Plot the data: 
+```{r baseplot-04}
+plot(co2)
+```
+
+## Analysis notebooks 
+- The author says that one way to combat the reproducibility crisis is to document exactly how data analysis is done
+- This can be accomplished through RMarkdown 
+- Scripts can still be written in .R files, but should be converted to .Rmd files too
+
+## RMarkdown
+- He gives a basic overview of RMarkdown including how to convert it into a pdf
+- He emphasizes that R is updated roughly every six months
+
+Record which version of R was used to create script running: 
+```{r sessinfo-04}
+sessionInfo()
+```
+
+
