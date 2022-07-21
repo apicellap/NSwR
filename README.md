@@ -1,13 +1,3 @@
-Welcome! 
+Welcome!
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
-
-This template provides a skeleton file structure that you can edit to create your book. 
-
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
-
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
-
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+Getting Started with R: An Introduction for Biologists is a wonderful text that helped me develop R skills. I have taken my notes on this text through several Rmarkdown (.Rmd) documents and compiled them using bookdown. The complete package of these notes can be found at my deployed netlify site: https://zingy-llama-670bfe.netlify.app
